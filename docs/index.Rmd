@@ -1,0 +1,25 @@
+---
+title: "업무 자동화를 위한 R 프로그래밍 기초"
+author: "박찬엽"
+institute: "SKTelecom"
+output:
+  xaringan::moon_reader:
+    lib_dir: libs
+    nature:
+      highlightStyle: github
+      highlightLines: true
+      countIncrementalSlides: false
+---
+
+```{r setup, include=FALSE}
+options(htmltools.dir.version = FALSE)
+```
+
+프로그래밍 흐름 처리(if, for)
+텍스트 처리 기본 - stringr
+날짜시간 자료형 처리 기본 - lubridate
+단정한 데이터 관리 - tidyr
+    단정한 데이터란, spread - gather
+예쁜 표 만들기 - gt
+https://github.com/rstudio/fontawesome
+fontawesome::fa("circle", fill="green")
