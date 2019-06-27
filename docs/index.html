@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
   <head>
-    <title>업무 자동화를 위한 R 잡학사전</title>
+    <title>업무 자동화를 위한 R 더하기</title>
     <meta charset="utf-8" />
     <meta name="author" content="박찬엽" />
     <link href="libs/remark-css/default.css" rel="stylesheet" />
@@ -34,20 +34,17 @@ background-size: cover
 
 ---
 
-
-layout: false
 class: center, middle, title-slide
 
-## 업무자동화를 위한 R 잡학사전.small[(1)]
+## 업무자동화를 위한 R 더하기
 
-### &lt;https://mrchypark.github.io/djk-collect-data-with-r&gt;
+### &lt;https://mrchypark.github.io/R-Programing-Basic-for-Automation/&gt;
 
-#### [[의견 및 오류 신고]](https://github.com/mrchypark/djk-collect-data-with-r/issues/new)
-#### [스타누르기](https://github.com/mrchypark/djk-collect-data-with-r)는 컨텐츠 제작자를 춤추게 합니다.
+#### [[의견 및 오류 신고]](https://github.com/mrchypark/R-Programing-Basic-for-Automation/issues)
 
 ### 박찬엽
 
-### 2019년 6월 28일
+### .small[2019년 6월 28일]
 
 ---
 
@@ -55,21 +52,1250 @@ layout: true
 
 background-image: url(https://user-images.githubusercontent.com/6179259/60290723-50002480-9954-11e9-96fe-3fbd4d7d11d9.png)
 background-size: cover
+
 ---
 
-프로그래밍 흐름 처리(if, for)
-텍스트 처리 기본 - stringr
-str_c
-https://rverbalexpressions.netlify.com/index.html
+## 목차
 
-https://github.com/sfirke/janitor
-날짜시간 자료형 처리 기본 - lubridate
-단정한 데이터 관리 - tidyr
-    단정한 데이터란, spread - gather
-예쁜 표 만들기 - gt
-https://github.com/rstudio/fontawesome
-fontawesome::fa("circle", fill="green")
+1. 패키지 설치 방법 2 [remotes][remotes]
+1. 글자를 자유롭게 다루는 [stringr][stringr]
+    - 글자 패턴 [rverbalexpressions][rverbalexpressions]
+1. 날짜시간 자료형 [lubridate][lubridate]
+1. 데이터의 form 변환 [tidyr][tidyr]
+1. 프로그래밍 흐름 처리 if, for
+1. 예쁜 표 만들기 [gt][gt]
+    - 신호등 만들기 [fontawesome][fontawesome]
+1. 연장을 더 챙겨드림 1 [janitor][janitor]
+1. 연장을 더 챙겨드림 2 [crosstalk][crosstalk] 
+
 ---
+## 패키지 설치 방법 2 [remotes][remotes]
+
+`remotes` 패키지는 `cran`이 아닌 곳에서 제공하는 패키지를 설치하는 함수를 제공
+
+
+```r
+## 패키지 설치 방법 1
+install.packages("remotes")
+
+## 패키지내 함수를 사용하기 위해 불러옴
+library(remotes)
+
+## 패키지 설치 방법 2
+install_github("https://github.com/rstudio/fontawesome")
+install_github("https://github.com/rstudio/gt")
+```
+
+---
+
+## 패키지 설치 방법 2 [remotes][remotes]
+
+패키지를 제공하는 가장 유명한 장소 [github][github]
+
+![](https://user-images.githubusercontent.com/6179259/60295474-c013a800-995e-11e9-8827-f13d356ec04a.png)
+
+---
+
+## 패키지 설치 방법 2 [remotes][remotes]
+
+패키지의 github 주소를 바로 사용하면 설치 진행
+
+
+```r
+install_github("https://github.com/rstudio/gt")
+```
+
+![](https://user-images.githubusercontent.com/6179259/60295635-24366c00-995f-11e9-9211-22c69ba240a3.png)
+
+---
+
+## 패키지 설치 방법 2 [remotes][remotes]
+
+대부분 설명서에 설치하는 함수를 안내함.
+
+![](https://user-images.githubusercontent.com/6179259/60295733-68c20780-995f-11e9-8a38-b5cb06e16fb9.png)
+
+---
+
+## 특정 패키지의 함수를 지정 `::`
+
+`패키지이름::함수이름()` 으로 작성하면 어느 패키지의 함수인지 알 수 있음.
+
+
+```r
+install_github("https://github.com/rstudio/gt")
+remotes::install_github("https://github.com/rstudio/gt")
+```
+
+---
+
+## 특정 패키지의 함수를 지정 `::`
+
+dplyr 패키지의 경우 많은 함수 이름이 다른 패키지와 겹침 
+
+
+```r
+library(dplyr)
+```
+
+```
+#&gt; 다음의 패키지를 부착합니다: ‘dplyr’
+#&gt; 
+#&gt; The following objects are masked from ‘package:stats’:
+#&gt; 
+#&gt;     filter, lag
+#&gt; 
+#&gt; The following object is masked from ‘package:testthat’:
+#&gt; 
+#&gt;     matches
+#&gt; 
+#&gt; The following objects are masked from ‘package:base’:
+#&gt; 
+#&gt;     intersect, setdiff, setequal, union
+```
+---
+
+## 특정 패키지의 함수를 지정 `::`
+
+혹시 `filter()` 함수가 문제가 생기면, 아래 처럼 해보세요.
+
+
+```r
+## dplyr 내의 모든 함수를 바로 사용하기 위해서 불러옴
+library(dplyr)
+
+## library로 패키지를 불러왔기 때문에
+## 패키지내의 함수를 바로 사용할 수 있음
+filter()
+
+## 같은 이름을 가진 함수들이 있을 때는
+## 이렇게 특정 패키지내의 함수를 사용하라고 작성할 수 있음
+dplyr::filter()
+```
+
+---
+
+## 글자를 자유롭게 다루는 [stringr][stringr]
+
+
+```r
+install.packages("stringr")
+```
+
+---
+
+## 글자 패턴 [rverbalexpressions][rverbalexpressions]
+
+
+---
+
+## 날짜시간 자료형 [lubridate][lubridate]
+
+
+```r
+install.packages("lubridate")
+```
+
+---
+
+## 데이터의 form 변환 [tidyr][tidyr]
+
+
+```r
+install.packages("tidyr")
+```
+
+`gather()` 함수와 `spread()` 함수를 제공    
+
+&lt;img src=https://user-images.githubusercontent.com/6179259/60299141-fa814300-9966-11e9-9f9f-d0f2bae656dc.png width=100%&gt;
+
+---
+.pull-left[
+### wide form
+1. 사람이 눈으로 보기 좋은 모양
+1. 2개 변수에 대한 값만 확인 가능
+1. dashboard 형이라고도 하며 조인 등 연산이 어려움
+]
+.pull-right[
+### long form
+1. 컴퓨터가 계산하기 좋은 모양
+1. tidy data의 요건을 충족
+1. ggplot2 등 패키지 대부분의 입력 형태
+]
+
+![](https://user-images.githubusercontent.com/6179259/60298919-8181eb80-9966-11e9-944f-49231169f2bc.png)
+
+---
+
+## wide to long
+
+gather() 함수는 미래의 key 이름과 value 이름을 받아서 wide form 데이터를 long form으로 바꿈
+
+![](https://user-images.githubusercontent.com/6179259/60299951-dde60a80-9968-11e9-80e3-1a6a14e91412.png)
+
+---
+
+## wide to long
+
+예시 데이터 만들기
+
+
+```r
+library(dplyr)
+
+juniors_untidy &lt;- tribble(
+  ~ "baker", ~"cinnamon_1", ~"cardamom_2", ~"nutmeg_3",
+  "Emma", 1L,   0L, 1L,
+  "Harry", 1L,   1L, 1L,
+  "Ruby", 1L,   0L, 1L,
+  "Zainab", 0L, NA, 0L
+)
+juniors_untidy
+```
+
+```
+## # A tibble: 4 x 4
+##   baker  cinnamon_1 cardamom_2 nutmeg_3
+##   &lt;chr&gt;       &lt;int&gt;      &lt;int&gt;    &lt;int&gt;
+## 1 Emma            1          0        1
+## 2 Harry           1          1        1
+## 3 Ruby            1          0        1
+## 4 Zainab          0         NA        0
+```
+
+---
+
+## wide to long
+
+key 컬럼 이름과 value 컬럼 이름을 정하고, long으로 바꿀 wide한 부분의 컬럼을 선택
+
+
+```r
+juniors_untidy %&gt;% 
+  gather(key = "spice",      # key  이름은 spice 로 하겠음
+         value = "correct",  # value 이름은 correct로 하겠음
+         cinnamon_1:nutmeg_3)# 이 컬럼들을 사용하겠음
+```
+
+```
+## # A tibble: 12 x 3
+##    baker  spice      correct
+##    &lt;chr&gt;  &lt;chr&gt;        &lt;int&gt;
+##  1 Emma   cinnamon_1       1
+##  2 Harry  cinnamon_1       1
+##  3 Ruby   cinnamon_1       1
+##  4 Zainab cinnamon_1       0
+##  5 Emma   cardamom_2       0
+##  6 Harry  cardamom_2       1
+##  7 Ruby   cardamom_2       0
+##  8 Zainab cardamom_2      NA
+##  9 Emma   nutmeg_3         1
+## 10 Harry  nutmeg_3         1
+## 11 Ruby   nutmeg_3         1
+## 12 Zainab nutmeg_3         0
+```
+---
+## wide to long
+
+![](https://github.com/apreshill/teachthat/blob/master/gather/gather.gif?raw=true)
+
+---
+
+## 실습용 패키지 설치
+
+실습을 위해 사용할 [tqk][tqk] 패키지는 한국 주식 데이터를 가져옵니다.
+
+
+```r
+## remotes 패키지가 없다면 설치해주세요.
+install.packages("remotes")
+remotes::install_github("mrchypark/tqk")
+```
+
+---
+
+## [tqk][tqk] 패키지 사용법
+
+
+```r
+library(tqk)
+library(dplyr)
+library(stringr)
+
+# 주식종목 코드를 가져옵니다.
+code_get() %&gt;% 
+  # 그 중에 현대자동차를 찾습니다.
+  filter(str_detect(name, "현대자동차")) %&gt;% 
+  # code 만 선택합니다.
+  select(code) %&gt;% 
+  # code에 해당하는 주식의 데이터를 가져옵니다.
+  # 날짜의 범위를 지정할 수 있습니다.
+  tqk_get(from = "2019-01-01", to = "2019-02-28") %&gt;% 
+  # 데이터에 현대자동차 주식이라는 것을 추가합니다.
+  mutate(comp = "현대자동차") -&gt; 
+  hdcm
+hdcm
+```
+
+---
+
+## [tqk][tqk] 패키지 사용법
+
+
+```
+## # A tibble: 244 x 8
+##    date         open   high    low  close volume adjusted comp      
+##    &lt;date&gt;      &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;  &lt;int&gt;    &lt;dbl&gt; &lt;chr&gt;     
+##  1 2018-01-02 150500 153000 149000 149500 731763   149500 현대자동차
+##  2 2018-01-03 149000 151000 149000 150500 450874   150500 현대자동차
+##  3 2018-01-04 150500 151000 146000 146500 931558   146500 현대자동차
+##  4 2018-01-05 146000 149000 145500 149000 463695   149000 현대자동차
+##  5 2018-01-08 148500 151000 147500 151000 482619   151000 현대자동차
+##  6 2018-01-09 151000 152500 149500 152500 465845   152500 현대자동차
+##  7 2018-01-10 152500 158000 152000 155500 793679   155500 현대자동차
+##  8 2018-01-11 156000 156500 152500 155000 476891   155000 현대자동차
+##  9 2018-01-12 153500 156000 153500 154000 424738   154000 현대자동차
+## 10 2018-01-15 154000 155000 151000 155000 315592   155000 현대자동차
+## # ... with 234 more rows
+```
+
+---
+
+## 연습문제 
+
+- 앞서 만든 `hdcm` 데이터는 long form 인가요 wide form 인가요?
+
+- `hdcm` 데이터를 `gather()` 함수를 이용해서 아래와 같이 long form 으로 바꾸어 보세요.
+
+
+```
+## # A tibble: 1,464 x 4
+##    date       comp       type   price
+##    &lt;date&gt;     &lt;chr&gt;      &lt;chr&gt;  &lt;dbl&gt;
+##  1 2018-01-02 현대자동차 open  150500
+##  2 2018-01-03 현대자동차 open  149000
+##  3 2018-01-04 현대자동차 open  150500
+##  4 2018-01-05 현대자동차 open  146000
+##  5 2018-01-08 현대자동차 open  148500
+##  6 2018-01-09 현대자동차 open  151000
+##  7 2018-01-10 현대자동차 open  152500
+##  8 2018-01-11 현대자동차 open  156000
+##  9 2018-01-12 현대자동차 open  153500
+## 10 2018-01-15 현대자동차 open  154000
+## # ... with 1,454 more rows
+```
+
+---
+
+## 연습문제 
+
+- 앞서 long form 으로 바꾼 데이터를 `hdcm_long`에 assign 하세요.
+- `hdcm_long` 에서 `type` 이 "volume"인 것은 제외해주세요.
+
+---
+
+## long to wide
+
+spead() 함수는 wide form 데이터에서 key column과 value column을 받아서  long form으로 바꿈
+
+![](https://user-images.githubusercontent.com/6179259/60301034-5c43ac00-996b-11e9-95e8-cb2468192f24.png)
+
+---
+
+## long to wide
+
+예시 데이터 만들기
+.pull-left[
+
+```r
+library(dplyr)
+
+juniors_about &lt;- tribble(
+  ~ "baker", ~"age",
+  ~"outcome",~"spices",
+  "Emma", 11L, "finalist", 2L, 
+  "Harry", 10L, "winner", 3L, 
+  "Ruby", 11L, "finalist", 2L, 
+  "Zainab", 10L, "finalist", 0L
+) %&gt;% 
+  gather(key = "var_name",
+         value = "var_value",
+         -baker)
+```
+]
+.pull-right[
+
+```
+## # A tibble: 12 x 3
+##    baker  var_name var_value
+##    &lt;chr&gt;  &lt;chr&gt;    &lt;chr&gt;    
+##  1 Emma   age      11       
+##  2 Harry  age      10       
+##  3 Ruby   age      11       
+##  4 Zainab age      10       
+##  5 Emma   outcome  finalist 
+##  6 Harry  outcome  winner   
+##  7 Ruby   outcome  finalist 
+##  8 Zainab outcome  finalist 
+##  9 Emma   spices   2        
+## 10 Harry  spices   3        
+## 11 Ruby   spices   2        
+## 12 Zainab spices   0
+```
+]
+---
+
+## long to wide
+
+key 컬럼 이름과 value 컬럼 이름을 정하고, long으로 바꿀 wide한 부분의 컬럼을 선택
+
+
+```r
+juniors_about %&gt;% 
+  spread(var_name, var_value)
+```
+
+```
+## # A tibble: 4 x 4
+##   baker  age   outcome  spices
+##   &lt;chr&gt;  &lt;chr&gt; &lt;chr&gt;    &lt;chr&gt; 
+## 1 Emma   11    finalist 2     
+## 2 Harry  10    winner   3     
+## 3 Ruby   11    finalist 2     
+## 4 Zainab 10    finalist 0
+```
+
+---
+## long to wide
+
+![](https://github.com/apreshill/teachthat/blob/master/spread/spread.gif?raw=true)
+
+---
+
+## 연습문제 
+
+`hdcm_md` 데이터를 아래 코드로 만들어 주세요.
+.pull-left[
+
+```r
+library(lubridate)
+hdcm %&gt;% 
+  mutate(
+    month = month(date),
+    day = day(date)
+  ) %&gt;% 
+  select(
+    comp, 
+    month, 
+    day, 
+    close
+  ) %&gt;% 
+  group_by(month) %&gt;% 
+  summarise(
+    comp = "현대자동차",
+    mclose = mean(close)
+    )-&gt;
+  hdcm_md
+```
+]
+.pull-right[
+
+```
+## # A tibble: 12 x 3
+##    month comp        mclose
+##    &lt;dbl&gt; &lt;chr&gt;        &lt;dbl&gt;
+##  1     1 현대자동차 155205.
+##  2     2 현대자동차 157889.
+##  3     3 현대자동차 152833.
+##  4     4 현대자동차 155500 
+##  5     5 현대자동차 148475 
+##  6     6 현대자동차 134079.
+##  7     7 현대자동차 125523.
+##  8     8 현대자동차 125273.
+##  9     9 현대자동차 129118.
+## 10    10 현대자동차 116643.
+## 11    11 현대자동차 102155.
+## 12    12 현대자동차 115895.
+```
+]
+
+---
+
+## 연습문제 
+
+1. `hdcm_md` 데이터를 아래와 같이 월 컬럼을 만들어 주세요.
+
+
+```
+## # A tibble: 1 x 13
+##   comp     `1`    `2`    `3`    `4`    `5`    `6`    `7`    `8`    `9`
+##   &lt;chr&gt;  &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;
+## 1 현대자동~ 1.55e5 1.58e5 1.53e5 155500 148475 1.34e5 1.26e5 1.25e5 1.29e5
+## # ... with 3 more variables: `10` &lt;dbl&gt;, `11` &lt;dbl&gt;, `12` &lt;dbl&gt;
+```
+
+---
+
+## 연장을 더 챙겨드림 1 [janitor][janitor]
+
+![](https://user-images.githubusercontent.com/6179259/60302194-32d84f80-996e-11e9-8909-5482332b7f14.png)
+
+---
+
+## 프로그래밍 흐름 처리 .small[(if, for)]
+
+
+---
+
+## 예쁜 표 만들기 [gt][gt]
+
+![](https://user-images.githubusercontent.com/6179259/60302611-35877480-996f-11e9-823c-f04b5e30fe05.png)
+
+---
+
+## 예쁜 표 만들기 [gt][gt]
+
+`gt()`를 이용해 출력 이후 `%&gt;%` 로 연결해서 출력물 설정을 추가
+
+
+```r
+library(gt)
+iris %&gt;% 
+  head() %&gt;% 
+  gt()
+```
+
+<style>html {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
+}
+
+#bnzhgdlxee .gt_table {
+  display: table;
+  border-collapse: collapse;
+  margin-left: auto;
+  margin-right: auto;
+  color: #000000;
+  font-size: 16px;
+  background-color: #FFFFFF;
+  /* table.background.color */
+  width: auto;
+  /* table.width */
+  border-top-style: solid;
+  /* table.border.top.style */
+  border-top-width: 2px;
+  /* table.border.top.width */
+  border-top-color: #A8A8A8;
+  /* table.border.top.color */
+}
+
+#bnzhgdlxee .gt_heading {
+  background-color: #FFFFFF;
+  /* heading.background.color */
+  border-bottom-color: #FFFFFF;
+}
+
+#bnzhgdlxee .gt_title {
+  color: #000000;
+  font-size: 125%;
+  /* heading.title.font.size */
+  padding-top: 4px;
+  /* heading.top.padding */
+  padding-bottom: 1px;
+  border-bottom-color: #FFFFFF;
+  border-bottom-width: 0;
+}
+
+#bnzhgdlxee .gt_subtitle {
+  color: #000000;
+  font-size: 85%;
+  /* heading.subtitle.font.size */
+  padding-top: 1px;
+  padding-bottom: 4px;
+  /* heading.bottom.padding */
+  border-top-color: #FFFFFF;
+  border-top-width: 0;
+}
+
+#bnzhgdlxee .gt_bottom_border {
+  border-bottom-style: solid;
+  /* heading.border.bottom.style */
+  border-bottom-width: 2px;
+  /* heading.border.bottom.width */
+  border-bottom-color: #A8A8A8;
+  /* heading.border.bottom.color */
+}
+
+#bnzhgdlxee .gt_column_spanner {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #A8A8A8;
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+
+#bnzhgdlxee .gt_col_heading {
+  color: #000000;
+  background-color: #FFFFFF;
+  /* column_labels.background.color */
+  font-size: 16px;
+  /* column_labels.font.size */
+  font-weight: initial;
+  /* column_labels.font.weight */
+  vertical-align: middle;
+  padding: 10px;
+  margin: 10px;
+}
+
+#bnzhgdlxee .gt_sep_right {
+  border-right: 5px solid #FFFFFF;
+}
+
+#bnzhgdlxee .gt_group_heading {
+  padding: 8px;
+  color: #000000;
+  background-color: #FFFFFF;
+  /* row_group.background.color */
+  font-size: 16px;
+  /* row_group.font.size */
+  font-weight: initial;
+  /* row_group.font.weight */
+  border-top-style: solid;
+  /* row_group.border.top.style */
+  border-top-width: 2px;
+  /* row_group.border.top.width */
+  border-top-color: #A8A8A8;
+  /* row_group.border.top.color */
+  border-bottom-style: solid;
+  /* row_group.border.bottom.style */
+  border-bottom-width: 2px;
+  /* row_group.border.bottom.width */
+  border-bottom-color: #A8A8A8;
+  /* row_group.border.bottom.color */
+  vertical-align: middle;
+}
+
+#bnzhgdlxee .gt_empty_group_heading {
+  padding: 0.5px;
+  color: #000000;
+  background-color: #FFFFFF;
+  /* row_group.background.color */
+  font-size: 16px;
+  /* row_group.font.size */
+  font-weight: initial;
+  /* row_group.font.weight */
+  border-top-style: solid;
+  /* row_group.border.top.style */
+  border-top-width: 2px;
+  /* row_group.border.top.width */
+  border-top-color: #A8A8A8;
+  /* row_group.border.top.color */
+  border-bottom-style: solid;
+  /* row_group.border.bottom.style */
+  border-bottom-width: 2px;
+  /* row_group.border.bottom.width */
+  border-bottom-color: #A8A8A8;
+  /* row_group.border.bottom.color */
+  vertical-align: middle;
+}
+
+#bnzhgdlxee .gt_striped {
+  background-color: #f2f2f2;
+}
+
+#bnzhgdlxee .gt_from_md > :first-child {
+  margin-top: 0;
+}
+
+#bnzhgdlxee .gt_from_md > :last-child {
+  margin-bottom: 0;
+}
+
+#bnzhgdlxee .gt_row {
+  padding: 8px;
+  /* row.padding */
+  margin: 10px;
+  vertical-align: middle;
+}
+
+#bnzhgdlxee .gt_stub {
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #A8A8A8;
+  padding-left: 12px;
+}
+
+#bnzhgdlxee .gt_summary_row {
+  color: #000000;
+  background-color: #FFFFFF;
+  /* summary_row.background.color */
+  padding: 8px;
+  /* summary_row.padding */
+  text-transform: inherit;
+  /* summary_row.text_transform */
+}
+
+#bnzhgdlxee .gt_grand_summary_row {
+  color: #000000;
+  background-color: #FFFFFF;
+  /* grand_summary_row.background.color */
+  padding: 8px;
+  /* grand_summary_row.padding */
+  text-transform: inherit;
+  /* grand_summary_row.text_transform */
+}
+
+#bnzhgdlxee .gt_first_summary_row {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #A8A8A8;
+}
+
+#bnzhgdlxee .gt_first_grand_summary_row {
+  border-top-style: double;
+  border-top-width: 6px;
+  border-top-color: #A8A8A8;
+}
+
+#bnzhgdlxee .gt_table_body {
+  border-top-style: solid;
+  /* table_body.border.top.style */
+  border-top-width: 2px;
+  /* table_body.border.top.width */
+  border-top-color: #A8A8A8;
+  /* table_body.border.top.color */
+  border-bottom-style: solid;
+  /* table_body.border.bottom.style */
+  border-bottom-width: 2px;
+  /* table_body.border.bottom.width */
+  border-bottom-color: #A8A8A8;
+  /* table_body.border.bottom.color */
+}
+
+#bnzhgdlxee .gt_footnote {
+  font-size: 90%;
+  /* footnote.font.size */
+  padding: 4px;
+  /* footnote.padding */
+}
+
+#bnzhgdlxee .gt_sourcenote {
+  font-size: 90%;
+  /* sourcenote.font.size */
+  padding: 4px;
+  /* sourcenote.padding */
+}
+
+#bnzhgdlxee .gt_center {
+  text-align: center;
+}
+
+#bnzhgdlxee .gt_left {
+  text-align: left;
+}
+
+#bnzhgdlxee .gt_right {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+#bnzhgdlxee .gt_font_normal {
+  font-weight: normal;
+}
+
+#bnzhgdlxee .gt_font_bold {
+  font-weight: bold;
+}
+
+#bnzhgdlxee .gt_font_italic {
+  font-style: italic;
+}
+
+#bnzhgdlxee .gt_super {
+  font-size: 65%;
+}
+
+#bnzhgdlxee .gt_footnote_glyph {
+  font-style: italic;
+  font-size: 65%;
+}
+</style>
+<div id="bnzhgdlxee" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;"><!--gt table start-->
+<table class='gt_table'>
+<tr>
+<th class='gt_col_heading gt_right' rowspan='1' colspan='1'>Sepal.Length</th>
+<th class='gt_col_heading gt_right' rowspan='1' colspan='1'>Sepal.Width</th>
+<th class='gt_col_heading gt_right' rowspan='1' colspan='1'>Petal.Length</th>
+<th class='gt_col_heading gt_right' rowspan='1' colspan='1'>Petal.Width</th>
+<th class='gt_col_heading gt_center' rowspan='1' colspan='1'>Species</th>
+</tr>
+<tbody class='gt_table_body'>
+<tr>
+<td class='gt_row gt_right'>5.1</td>
+<td class='gt_row gt_right'>3.5</td>
+<td class='gt_row gt_right'>1.4</td>
+<td class='gt_row gt_right'>0.2</td>
+<td class='gt_row gt_center'>setosa</td>
+</tr>
+<tr>
+<td class='gt_row gt_right gt_striped'>4.9</td>
+<td class='gt_row gt_right gt_striped'>3.0</td>
+<td class='gt_row gt_right gt_striped'>1.4</td>
+<td class='gt_row gt_right gt_striped'>0.2</td>
+<td class='gt_row gt_center gt_striped'>setosa</td>
+</tr>
+<tr>
+<td class='gt_row gt_right'>4.7</td>
+<td class='gt_row gt_right'>3.2</td>
+<td class='gt_row gt_right'>1.3</td>
+<td class='gt_row gt_right'>0.2</td>
+<td class='gt_row gt_center'>setosa</td>
+</tr>
+<tr>
+<td class='gt_row gt_right gt_striped'>4.6</td>
+<td class='gt_row gt_right gt_striped'>3.1</td>
+<td class='gt_row gt_right gt_striped'>1.5</td>
+<td class='gt_row gt_right gt_striped'>0.2</td>
+<td class='gt_row gt_center gt_striped'>setosa</td>
+</tr>
+<tr>
+<td class='gt_row gt_right'>5.0</td>
+<td class='gt_row gt_right'>3.6</td>
+<td class='gt_row gt_right'>1.4</td>
+<td class='gt_row gt_right'>0.2</td>
+<td class='gt_row gt_center'>setosa</td>
+</tr>
+<tr>
+<td class='gt_row gt_right gt_striped'>5.4</td>
+<td class='gt_row gt_right gt_striped'>3.9</td>
+<td class='gt_row gt_right gt_striped'>1.7</td>
+<td class='gt_row gt_right gt_striped'>0.4</td>
+<td class='gt_row gt_center gt_striped'>setosa</td>
+</tr>
+</tbody>
+</table>
+<!--gt table end-->
+</div>
+
+---
+
+## 신호등 만들기 
+
+[fontawesome][fontawesome] 패키지는 이모티콘을 사용할 수 있게 해줌
+ 
+<style>html {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
+}
+
+#rspkasvkzd .gt_table {
+  display: table;
+  border-collapse: collapse;
+  margin-left: auto;
+  margin-right: auto;
+  color: #000000;
+  font-size: 16px;
+  background-color: #FFFFFF;
+  /* table.background.color */
+  width: auto;
+  /* table.width */
+  border-top-style: solid;
+  /* table.border.top.style */
+  border-top-width: 2px;
+  /* table.border.top.width */
+  border-top-color: #A8A8A8;
+  /* table.border.top.color */
+}
+
+#rspkasvkzd .gt_heading {
+  background-color: #FFFFFF;
+  /* heading.background.color */
+  border-bottom-color: #FFFFFF;
+}
+
+#rspkasvkzd .gt_title {
+  color: #000000;
+  font-size: 125%;
+  /* heading.title.font.size */
+  padding-top: 4px;
+  /* heading.top.padding */
+  padding-bottom: 1px;
+  border-bottom-color: #FFFFFF;
+  border-bottom-width: 0;
+}
+
+#rspkasvkzd .gt_subtitle {
+  color: #000000;
+  font-size: 85%;
+  /* heading.subtitle.font.size */
+  padding-top: 1px;
+  padding-bottom: 4px;
+  /* heading.bottom.padding */
+  border-top-color: #FFFFFF;
+  border-top-width: 0;
+}
+
+#rspkasvkzd .gt_bottom_border {
+  border-bottom-style: solid;
+  /* heading.border.bottom.style */
+  border-bottom-width: 2px;
+  /* heading.border.bottom.width */
+  border-bottom-color: #A8A8A8;
+  /* heading.border.bottom.color */
+}
+
+#rspkasvkzd .gt_column_spanner {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #A8A8A8;
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+
+#rspkasvkzd .gt_col_heading {
+  color: #000000;
+  background-color: #FFFFFF;
+  /* column_labels.background.color */
+  font-size: 16px;
+  /* column_labels.font.size */
+  font-weight: initial;
+  /* column_labels.font.weight */
+  vertical-align: middle;
+  padding: 10px;
+  margin: 10px;
+}
+
+#rspkasvkzd .gt_sep_right {
+  border-right: 5px solid #FFFFFF;
+}
+
+#rspkasvkzd .gt_group_heading {
+  padding: 8px;
+  color: #000000;
+  background-color: #FFFFFF;
+  /* row_group.background.color */
+  font-size: 16px;
+  /* row_group.font.size */
+  font-weight: initial;
+  /* row_group.font.weight */
+  border-top-style: solid;
+  /* row_group.border.top.style */
+  border-top-width: 2px;
+  /* row_group.border.top.width */
+  border-top-color: #A8A8A8;
+  /* row_group.border.top.color */
+  border-bottom-style: solid;
+  /* row_group.border.bottom.style */
+  border-bottom-width: 2px;
+  /* row_group.border.bottom.width */
+  border-bottom-color: #A8A8A8;
+  /* row_group.border.bottom.color */
+  vertical-align: middle;
+}
+
+#rspkasvkzd .gt_empty_group_heading {
+  padding: 0.5px;
+  color: #000000;
+  background-color: #FFFFFF;
+  /* row_group.background.color */
+  font-size: 16px;
+  /* row_group.font.size */
+  font-weight: initial;
+  /* row_group.font.weight */
+  border-top-style: solid;
+  /* row_group.border.top.style */
+  border-top-width: 2px;
+  /* row_group.border.top.width */
+  border-top-color: #A8A8A8;
+  /* row_group.border.top.color */
+  border-bottom-style: solid;
+  /* row_group.border.bottom.style */
+  border-bottom-width: 2px;
+  /* row_group.border.bottom.width */
+  border-bottom-color: #A8A8A8;
+  /* row_group.border.bottom.color */
+  vertical-align: middle;
+}
+
+#rspkasvkzd .gt_striped {
+  background-color: #f2f2f2;
+}
+
+#rspkasvkzd .gt_from_md > :first-child {
+  margin-top: 0;
+}
+
+#rspkasvkzd .gt_from_md > :last-child {
+  margin-bottom: 0;
+}
+
+#rspkasvkzd .gt_row {
+  padding: 8px;
+  /* row.padding */
+  margin: 10px;
+  vertical-align: middle;
+}
+
+#rspkasvkzd .gt_stub {
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #A8A8A8;
+  padding-left: 12px;
+}
+
+#rspkasvkzd .gt_summary_row {
+  color: #000000;
+  background-color: #FFFFFF;
+  /* summary_row.background.color */
+  padding: 8px;
+  /* summary_row.padding */
+  text-transform: inherit;
+  /* summary_row.text_transform */
+}
+
+#rspkasvkzd .gt_grand_summary_row {
+  color: #000000;
+  background-color: #FFFFFF;
+  /* grand_summary_row.background.color */
+  padding: 8px;
+  /* grand_summary_row.padding */
+  text-transform: inherit;
+  /* grand_summary_row.text_transform */
+}
+
+#rspkasvkzd .gt_first_summary_row {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #A8A8A8;
+}
+
+#rspkasvkzd .gt_first_grand_summary_row {
+  border-top-style: double;
+  border-top-width: 6px;
+  border-top-color: #A8A8A8;
+}
+
+#rspkasvkzd .gt_table_body {
+  border-top-style: solid;
+  /* table_body.border.top.style */
+  border-top-width: 2px;
+  /* table_body.border.top.width */
+  border-top-color: #A8A8A8;
+  /* table_body.border.top.color */
+  border-bottom-style: solid;
+  /* table_body.border.bottom.style */
+  border-bottom-width: 2px;
+  /* table_body.border.bottom.width */
+  border-bottom-color: #A8A8A8;
+  /* table_body.border.bottom.color */
+}
+
+#rspkasvkzd .gt_footnote {
+  font-size: 90%;
+  /* footnote.font.size */
+  padding: 4px;
+  /* footnote.padding */
+}
+
+#rspkasvkzd .gt_sourcenote {
+  font-size: 90%;
+  /* sourcenote.font.size */
+  padding: 4px;
+  /* sourcenote.padding */
+}
+
+#rspkasvkzd .gt_center {
+  text-align: center;
+}
+
+#rspkasvkzd .gt_left {
+  text-align: left;
+}
+
+#rspkasvkzd .gt_right {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+#rspkasvkzd .gt_font_normal {
+  font-weight: normal;
+}
+
+#rspkasvkzd .gt_font_bold {
+  font-weight: bold;
+}
+
+#rspkasvkzd .gt_font_italic {
+  font-style: italic;
+}
+
+#rspkasvkzd .gt_super {
+  font-size: 65%;
+}
+
+#rspkasvkzd .gt_footnote_glyph {
+  font-style: italic;
+  font-size: 65%;
+}
+</style>
+<div id="rspkasvkzd" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;"><!--gt table start-->
+<table class='gt_table'>
+<tr>
+<th class='gt_col_heading gt_right' rowspan='1' colspan='1'>Sepal.Length</th>
+<th class='gt_col_heading gt_right' rowspan='1' colspan='1'>Sepal.Width</th>
+<th class='gt_col_heading gt_right' rowspan='1' colspan='1'>Petal.Length</th>
+<th class='gt_col_heading gt_right' rowspan='1' colspan='1'>Petal.Width</th>
+<th class='gt_col_heading gt_center' rowspan='1' colspan='1'>Species</th>
+</tr>
+<tbody class='gt_table_body'>
+<tr>
+<td class='gt_row gt_right'>5.1 <svg style="height:0.8em;top:.04em;position:relative;fill:green;" viewBox="0 0 512 512"><path d="M256 8C119 8 8 119 8 256s111 248 248 248 248-111 248-248S393 8 256 8z"/></svg></td>
+<td class='gt_row gt_right'>3.5</td>
+<td class='gt_row gt_right'>1.4</td>
+<td class='gt_row gt_right'>0.2</td>
+<td class='gt_row gt_center'>setosa</td>
+</tr>
+<tr>
+<td class='gt_row gt_right gt_striped'>4.9 <svg style="height:0.8em;top:.04em;position:relative;fill:red;" viewBox="0 0 512 512"><path d="M256 8C119 8 8 119 8 256s111 248 248 248 248-111 248-248S393 8 256 8z"/></svg></td>
+<td class='gt_row gt_right gt_striped'>3.0</td>
+<td class='gt_row gt_right gt_striped'>1.4</td>
+<td class='gt_row gt_right gt_striped'>0.2</td>
+<td class='gt_row gt_center gt_striped'>setosa</td>
+</tr>
+<tr>
+<td class='gt_row gt_right'>4.7 <svg style="height:0.8em;top:.04em;position:relative;fill:red;" viewBox="0 0 512 512"><path d="M256 8C119 8 8 119 8 256s111 248 248 248 248-111 248-248S393 8 256 8z"/></svg></td>
+<td class='gt_row gt_right'>3.2</td>
+<td class='gt_row gt_right'>1.3</td>
+<td class='gt_row gt_right'>0.2</td>
+<td class='gt_row gt_center'>setosa</td>
+</tr>
+<tr>
+<td class='gt_row gt_right gt_striped'>4.6 <svg style="height:0.8em;top:.04em;position:relative;fill:red;" viewBox="0 0 512 512"><path d="M256 8C119 8 8 119 8 256s111 248 248 248 248-111 248-248S393 8 256 8z"/></svg></td>
+<td class='gt_row gt_right gt_striped'>3.1</td>
+<td class='gt_row gt_right gt_striped'>1.5</td>
+<td class='gt_row gt_right gt_striped'>0.2</td>
+<td class='gt_row gt_center gt_striped'>setosa</td>
+</tr>
+<tr>
+<td class='gt_row gt_right'>5.0 <svg style="height:0.8em;top:.04em;position:relative;fill:yellow;" viewBox="0 0 512 512"><path d="M256 8C119 8 8 119 8 256s111 248 248 248 248-111 248-248S393 8 256 8z"/></svg></td>
+<td class='gt_row gt_right'>3.6</td>
+<td class='gt_row gt_right'>1.4</td>
+<td class='gt_row gt_right'>0.2</td>
+<td class='gt_row gt_center'>setosa</td>
+</tr>
+<tr>
+<td class='gt_row gt_right gt_striped'>5.4 <svg style="height:0.8em;top:.04em;position:relative;fill:green;" viewBox="0 0 512 512"><path d="M256 8C119 8 8 119 8 256s111 248 248 248 248-111 248-248S393 8 256 8z"/></svg></td>
+<td class='gt_row gt_right gt_striped'>3.9</td>
+<td class='gt_row gt_right gt_striped'>1.7</td>
+<td class='gt_row gt_right gt_striped'>0.4</td>
+<td class='gt_row gt_center gt_striped'>setosa</td>
+</tr>
+<tr>
+<td class='gt_row gt_right'>4.6 <svg style="height:0.8em;top:.04em;position:relative;fill:red;" viewBox="0 0 512 512"><path d="M256 8C119 8 8 119 8 256s111 248 248 248 248-111 248-248S393 8 256 8z"/></svg></td>
+<td class='gt_row gt_right'>3.4</td>
+<td class='gt_row gt_right'>1.4</td>
+<td class='gt_row gt_right'>0.3</td>
+<td class='gt_row gt_center'>setosa</td>
+</tr>
+<tr>
+<td class='gt_row gt_right gt_striped'>5.0 <svg style="height:0.8em;top:.04em;position:relative;fill:yellow;" viewBox="0 0 512 512"><path d="M256 8C119 8 8 119 8 256s111 248 248 248 248-111 248-248S393 8 256 8z"/></svg></td>
+<td class='gt_row gt_right gt_striped'>3.4</td>
+<td class='gt_row gt_right gt_striped'>1.5</td>
+<td class='gt_row gt_right gt_striped'>0.2</td>
+<td class='gt_row gt_center gt_striped'>setosa</td>
+</tr>
+<tr>
+<td class='gt_row gt_right'>4.4 <svg style="height:0.8em;top:.04em;position:relative;fill:red;" viewBox="0 0 512 512"><path d="M256 8C119 8 8 119 8 256s111 248 248 248 248-111 248-248S393 8 256 8z"/></svg></td>
+<td class='gt_row gt_right'>2.9</td>
+<td class='gt_row gt_right'>1.4</td>
+<td class='gt_row gt_right'>0.2</td>
+<td class='gt_row gt_center'>setosa</td>
+</tr>
+</tbody>
+</table>
+<!--gt table end-->
+</div>
+
+---
+
+## [fontawesome][fontawesome] 패키지 설치
+
+
+```r
+remotes::install_github("rstudio/fontawesome")
+```
+
+## 사용법
+
+[fontawesome 사이트][fontawesome 사이트] 에서 아이콘 이름을 찾는다.
+[css 색][css 색]으로 채울 색을 지정한다. HEX도 사용가능. 이름의 대소문자를 구분하지 않음.
+
+
+```r
+fa("r-project", fill = "SteelBlue")
+```
+
+```
+## [1] "&lt;svg style=\"height:0.8em;top:.04em;position:relative;fill:SteelBlue;\" viewBox=\"0 0 581 512\"&gt;&lt;path d=\"M581 226.6C581 119.1 450.9 32 290.5 32S0 119.1 0 226.6C0 322.4 103.3 402 239.4 418.1V480h99.1v-61.5c24.3-2.7 47.6-7.4 69.4-13.9L448 480h112l-67.4-113.7c54.5-35.4 88.4-84.9 88.4-139.7zm-466.8 14.5c0-73.5 98.9-133 220.8-133s211.9 40.7 211.9 133c0 50.1-26.5 85-70.3 106.4-2.4-1.6-4.7-2.9-6.4-3.7-10.2-5.2-27.8-10.5-27.8-10.5s86.6-6.4 86.6-92.7-90.6-87.9-90.6-87.9h-199V361c-74.1-21.5-125.2-67.1-125.2-119.9zm225.1 38.3v-55.6c57.8 0 87.8-6.8 87.8 27.3 0 36.5-38.2 28.3-87.8 28.3zm-.9 72.5H365c10.8 0 18.9 11.7 24 19.2-16.1 1.9-33 2.8-50.6 2.9v-22.1z\"/&gt;&lt;/svg&gt;"
+```
+
+```r
+fa("r-project", fill = "#4682B4")
+```
+
+```
+## [1] "&lt;svg style=\"height:0.8em;top:.04em;position:relative;fill:#4682B4;\" viewBox=\"0 0 581 512\"&gt;&lt;path d=\"M581 226.6C581 119.1 450.9 32 290.5 32S0 119.1 0 226.6C0 322.4 103.3 402 239.4 418.1V480h99.1v-61.5c24.3-2.7 47.6-7.4 69.4-13.9L448 480h112l-67.4-113.7c54.5-35.4 88.4-84.9 88.4-139.7zm-466.8 14.5c0-73.5 98.9-133 220.8-133s211.9 40.7 211.9 133c0 50.1-26.5 85-70.3 106.4-2.4-1.6-4.7-2.9-6.4-3.7-10.2-5.2-27.8-10.5-27.8-10.5s86.6-6.4 86.6-92.7-90.6-87.9-90.6-87.9h-199V361c-74.1-21.5-125.2-67.1-125.2-119.9zm225.1 38.3v-55.6c57.8 0 87.8-6.8 87.8 27.3 0 36.5-38.2 28.3-87.8 28.3zm-.9 72.5H365c10.8 0 18.9 11.7 24 19.2-16.1 1.9-33 2.8-50.6 2.9v-22.1z\"/&gt;&lt;/svg&gt;"
+```
+
+---
+
+## 신호등 만들기
+
+
+```r
+library(stringr)
+library(gt)
+library(fontawesome)
+tr_light_green &lt;- function(x) str_c(x, fa("circle", fill="green")
+tr_light_red &lt;- function(x) str_c(x, fa("circle", fill="red")
+tr_light_yellow &lt;- function(x) str_c(x, fa("circle", fill="yellow")
+iris %&gt;% head(10) %&gt;% gt() %&gt;% 
+  text_transform(
+    locations = cells_data(
+      columns = "Sepal.Length", rows = Sepal.Length &gt; 5),
+    fn = tr_light_green )
+  ) %&gt;% 
+  text_transform(
+    locations = cells_data(
+      columns = "Sepal.Length", rows = Sepal.Length &lt; 5),
+    fn = tr_light_red)
+  ) %&gt;% 
+  text_transform(
+    locations = cells_data(
+      columns = "Sepal.Length", rows = Sepal.Length == 5),
+    fn = tr_light_yellow)
+  )
+```
+
+---
+
+## 연장을 더 챙겨드림 2 [crosstalk][crosstalk]
+
+![](https://user-images.githubusercontent.com/6179259/60302256-661ade80-996e-11e9-85f3-fff17311b310.png)
+
+
+
+[gt]: https://gt.rstudio.com/
+[lubridate]: https://lubridate.tidyverse.org/index.html
+[tidyr]: https://tidyr.tidyverse.org/
+[stringr]: https://stringr.tidyverse.org/
+[rverbalexpressions]: https://rverbalexpressions.netlify.com/index.html
+[janitor]: http://sfirke.github.io/janitor/
+[crosstalk]: https://rstudio.github.io/crosstalk/using.html
+[remotes]: https://remotes.r-lib.org/
+[fontawesome]: https://github.com/rstudio/fontawesome
+[github]: https://github.com/
+[tqk]: https://mrchypark.github.io/tqk/
+[fontawesome 사이트]: https://fontawesome.com/
+[css 색]: https://www.w3schools.com/cssref/css_colors.asp
     </textarea>
 <style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>

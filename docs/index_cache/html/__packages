@@ -1,0 +1,10 @@
+base
+usethis
+testthat
+dplyr
+tibble
+gt
+tqk
+stringr
+tidyr
+lubridate
