@@ -3,22 +3,61 @@ title: "업무 자동화를 위한 R 잡학사전"
 author: "박찬엽"
 output:
   xaringan::moon_reader:
+    seal: false
+    css: ["default", "ninjutsu", "custom.css"]
     lib_dir: libs
+    includes:
+      in_header: google_analytics.html
     nature:
       highlightStyle: github
       highlightLines: true
       countIncrementalSlides: false
+      ratio: '4:3'
 ---
+layout: true
+
+background-image: url(https://user-images.githubusercontent.com/6179259/60290723-50002480-9954-11e9-96fe-3fbd4d7d11d9.png)
+background-size: cover
 
 ```{r setup, include=FALSE}
 options(htmltools.dir.version = FALSE)
 ```
 
+---
+
+
+layout: false
+class: center, middle, title-slide
+
+## 업무자동화를 위한 R 잡학사전.small[(1)]
+
+### <https://mrchypark.github.io/djk-collect-data-with-r>
+
+#### [[의견 및 오류 신고]](https://github.com/mrchypark/djk-collect-data-with-r/issues/new)
+#### [스타누르기](https://github.com/mrchypark/djk-collect-data-with-r)는 컨텐츠 제작자를 춤추게 합니다.
+
+### 박찬엽
+
+### 2019년 6월 28일
+
+---
+
+layout: true
+
+background-image: url(https://user-images.githubusercontent.com/6179259/60290723-50002480-9954-11e9-96fe-3fbd4d7d11d9.png)
+background-size: cover
+---
+
 프로그래밍 흐름 처리(if, for)
 텍스트 처리 기본 - stringr
+str_c
+https://rverbalexpressions.netlify.com/index.html
+
+https://github.com/sfirke/janitor
 날짜시간 자료형 처리 기본 - lubridate
 단정한 데이터 관리 - tidyr
     단정한 데이터란, spread - gather
 예쁜 표 만들기 - gt
 https://github.com/rstudio/fontawesome
 fontawesome::fa("circle", fill="green")
+---
