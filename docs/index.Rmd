@@ -39,24 +39,18 @@ class: center, middle, title-slide
 
 ---
 
-layout: true
-
-background-image: url(https://user-images.githubusercontent.com/6179259/60290723-50002480-9954-11e9-96fe-3fbd4d7d11d9.png)
-background-size: cover
-
----
-
 ## 목차
 
 1. 패키지 설치 방법 2 [remotes][remotes]
+    - 특정 패키지의 함수를 지정 `::`
 1. 글자를 자유롭게 다루는 [stringr][stringr]
     - 글자 패턴 [rverbalexpressions][rverbalexpressions]
 1. 날짜시간 자료형 [lubridate][lubridate]
 1. 데이터의 form 변환 [tidyr][tidyr]
+1. 연장을 더 챙겨드림 1 [janitor][janitor]
 1. 프로그래밍 흐름 처리 if, for
 1. 예쁜 표 만들기 [gt][gt]
     - 신호등 만들기 [fontawesome][fontawesome]
-1. 연장을 더 챙겨드림 1 [janitor][janitor]
 1. 연장을 더 챙겨드림 2 [crosstalk][crosstalk] 
 
 ---
@@ -167,10 +161,131 @@ dplyr::filter()
 install.packages("stringr")
 ```
 
+![](https://user-images.githubusercontent.com/6179259/60305497-a7fc5280-9977-11e9-823e-4afb4605d6f8.png)
+
+---
+
+## 필요없는 공백 제거
+
+```{r}
+str_squish(" 안녕  하세요 \r\n\t") 
+```
+
+---
+
+## 실습 데이터 설치
+
+```{r eval=F}
+remotes::install_github("mrchypark/krwifi")
+```
+```{r}
+library(krwifi)
+wifi
+```
+
+---
+
+## mutate() 함수와 함께 사용하기
+
+```{r}
+wifi %>% 
+  distinct(소재지도로명주소) %>% 
+  slice(1:10) %>% 
+  mutate(len = str_length(소재지도로명주소),
+         gun_count = str_count(소재지도로명주소, "군")) 
+
+```
+
+---
+
+## mutate() 함수와 함께 사용하기
+
+```{r}
+wifi %>% 
+  distinct(설치시군구명) %>% 
+  slice(1:10) %>% 
+  mutate(repla = str_replace(설치시군구명, "군", "도로시"),
+         extra = str_extract(설치시군구명, "주시"))
+```
+
+---
+
+## mutate() 함수와 함께 사용하기
+
+```{r}
+wifi %>% 
+  distinct(설치시군구명) %>% 
+  slice(1:10) %>% 
+  mutate(
+    start = str_locate(설치시군구명, "구|군")[,1],
+    end = str_locate(설치시군구명, "구|군")[,2]
+  )
+```
+
+---
+
+## mutate() 함수와 함께 사용하기
+
+```{r}
+wifi %>% 
+  distinct(설치시군구명) %>% 
+  slice(1:10) %>%
+  mutate(remove = str_remove(설치시군구명, "구|군|시"),
+         if_remove = if_else( str_length(설치시군구명) == 2,
+                    설치시군구명, str_remove(설치시군구명, "구|군|시")))
+```
+
+---
+
+## filter()함수와 함께 사용하기
+
+```{r}
+wifi %>% 
+  filter(str_detect(소재지도로명주소, "군"))
+```
+
+---
+
+## filter()함수와 함께 사용하기
+
+```{r}
+wifi %>% 
+  filter(str_starts(설치장소상세 , "민원")) %>% 
+  distinct(설치장소상세)
+```
+
+---
+
+## filter()함수와 함께 사용하기
+
+```{r}
+wifi %>% 
+  filter(str_starts(설치장소상세 , "민원")) %>% 
+  count(설치장소상세, sort = T)
+```
+
+---
+
+## 정규표현식이란
+
+글자를 규칙이나 패턴으로 표현하는 문법 규칙의 일종
+
+R에서 사용할 때는 `\` 의 사용이 조금 달라서 바로 사용하기 매우 어려움
+
+```
+/^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.
+[a-zA-Z]{2,3}$
+```
+
+참고자료 : <http://www.nextree.co.kr/p4327/>
+
 ---
 
 ## 글자 패턴 [rverbalexpressions][rverbalexpressions]
 
+정규표현식을 함수로 제공
+
+![](https://user-images.githubusercontent.com/6179259/60304627-f6f4b880-9974-11e9-8494-24ccc2cd8f38.png)
 
 ---
 
@@ -179,6 +294,26 @@ install.packages("stringr")
 ```{r eval=F}
 install.packages("lubridate")
 ```
+
+![](https://user-images.githubusercontent.com/6179259/60305891-25749280-9979-11e9-81e4-25c9c3d8f805.png)
+
+---
+
+## 글자를 날짜시간 자료형으로
+
+---
+
+## 날짜시간 자료형에서 필요한 데이터 얻기
+
+---
+
+## 시간 자료형 [hms][hms]
+
+```{r eval=F}
+install.packages("hms")
+```
+
+![](https://user-images.githubusercontent.com/6179259/60306118-fb6fa000-9979-11e9-8591-76e242e9288f.png)
 
 ---
 
@@ -535,6 +670,11 @@ iris %>% head(10) %>% gt() %>%
 
 ![](https://user-images.githubusercontent.com/6179259/60302256-661ade80-996e-11e9-85f3-fff17311b310.png)
 
+---
+
+class: center, middle, title-slide
+
+## 감사합니다.
 
 
 [gt]: https://gt.rstudio.com/
@@ -550,3 +690,4 @@ iris %>% head(10) %>% gt() %>%
 [tqk]: https://mrchypark.github.io/tqk/
 [fontawesome 사이트]: https://fontawesome.com/
 [css 색]: https://www.w3schools.com/cssref/css_colors.asp
+[hms]: https://hms.tidyverse.org/
