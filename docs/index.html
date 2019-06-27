@@ -52,11 +52,11 @@ class: center, middle, title-slide
 
 1. 패키지 설치 방법 2 [remotes][remotes]
     - 특정 패키지의 함수를 지정 `::`
+1. 데이터의 form 변환 [tidyr][tidyr]
+1. 연장을 더 챙겨드림 1 [janitor][janitor]
 1. 글자를 자유롭게 다루는 [stringr][stringr]
     - 글자 패턴 [rverbalexpressions][rverbalexpressions]
 1. 날짜시간 자료형 [lubridate][lubridate]
-1. 데이터의 form 변환 [tidyr][tidyr]
-1. 연장을 더 챙겨드림 1 [janitor][janitor]
 1. 프로그래밍 흐름 처리 if, for
 1. 예쁜 표 만들기 [gt][gt]
     - 신호등 만들기 [fontawesome][fontawesome]
@@ -166,325 +166,6 @@ filter()
 ## 이렇게 특정 패키지내의 함수를 사용하라고 작성할 수 있음
 dplyr::filter()
 ```
-
----
-
-## 글자를 자유롭게 다루는 [stringr][stringr]
-
-
-```r
-install.packages("stringr")
-```
-
-![](https://user-images.githubusercontent.com/6179259/60305497-a7fc5280-9977-11e9-823e-4afb4605d6f8.png)
-
----
-
-## 필요없는 공백 제거
-
-
-```r
-library(stringr)
-str_squish(" 안녕  하세요 \r\n\t") 
-```
-
-```
-## [1] "안녕 하세요"
-```
-
----
-
-## 실습 데이터 설치
-
-
-```r
-remotes::install_github("mrchypark/krwifi")
-```
-
-```r
-library(krwifi)
-wifi
-```
-
-```
-## # A tibble: 21,473 x 17
-##    설치장소명 설치장소상세 설치시도명 설치시군구명 설치시설구분
-##    &lt;chr&gt;      &lt;chr&gt;        &lt;chr&gt;      &lt;chr&gt;        &lt;chr&gt;       
-##  1 청송군청   민원실       경상북도   청송군       관공서      
-##  2 청송군농업기술센터~ "\"1층, 2층, ~ 경상북도   청송군       관공서      
-##  3 청송읍사무소~ 민원실       경상북도   청송군       관공서      
-##  4 부동면사무소~ 민원실       경상북도   청송군       관공서      
-##  5 부남면사무소~ 민원실       경상북도   청송군       관공서      
-##  6 현동면사무소~ 민원실       경상북도   청송군       관공서      
-##  7 현서면사무소~ 민원실       경상북도   청송군       관공서      
-##  8 안덕면사무소~ 민원실       경상북도   청송군       관공서      
-##  9 파천면사무소~ 민원실       경상북도   청송군       관공서      
-## 10 진보면사무소~ 민원실       경상북도   청송군       관공서      
-## # ... with 21,463 more rows, and 12 more variables: 서비스제공사명 &lt;chr&gt;,
-## #   와이파이SSID &lt;chr&gt;, 설치년월 &lt;chr&gt;, 소재지도로명주소 &lt;chr&gt;,
-## #   소재지지번주소 &lt;chr&gt;, 관리기관명 &lt;chr&gt;, 관리기관전화번호 &lt;chr&gt;,
-## #   위도 &lt;chr&gt;, 경도 &lt;chr&gt;, 데이터기준일자 &lt;chr&gt;, 제공기관코드 &lt;chr&gt;,
-## #   제공기관명 &lt;chr&gt;
-```
-
----
-
-## mutate() 함수와 함께 사용하기
-
-
-```r
-wifi %&gt;% 
-  distinct(소재지도로명주소) %&gt;% 
-  slice(1:10) %&gt;% 
-  mutate(len = str_length(소재지도로명주소),
-         gun_count = str_count(소재지도로명주소, "군")) 
-```
-
-```
-## # A tibble: 10 x 3
-##    소재지도로명주소                                     len gun_count
-##    &lt;chr&gt;                                              &lt;int&gt;     &lt;int&gt;
-##  1 경상북도 청송군 청송읍 군청로 51(월막리 330)          28         2
-##  2 경상북도 청송군 청송읍 주왕산로 177(송생리 720)       30         1
-##  3 경상북도 청송군 청송읍 중앙로 253(월막리 239-2)       31         1
-##  4 경상북도 청송군 부동면 이전앞길 1(이전리 829-5)       30         1
-##  5 경상북도 청송군 부남면 대전로 119(대전리 638-2)       31         1
-##  6 경상북도 청송군 현동면 청송로 2647(도평리 794-1)      32         1
-##  7 경상북도 청송군 현서면 구산동로 27(구산리 97-1)       30         1
-##  8 경상북도 청송군 안덕면 안덕로 82(명당리 433-6)        30         1
-##  9 경상북도 청송군 파천면 청송로 5544(관리 572-1)        31         1
-## 10 경상북도 청송군 진보면 진안동2길 4-10(진안리 51-1)    33         1
-```
-
----
-
-## mutate() 함수와 함께 사용하기
-
-
-```r
-wifi %&gt;% 
-  distinct(설치시군구명) %&gt;% 
-  slice(1:10) %&gt;% 
-  mutate(repla = str_replace(설치시군구명, "군", "도로시"),
-         extra = str_extract(설치시군구명, "주시"))
-```
-
-```
-## # A tibble: 10 x 3
-##    설치시군구명 repla      extra
-##    &lt;chr&gt;        &lt;chr&gt;      &lt;chr&gt;
-##  1 청송군       청송도로시 &lt;NA&gt; 
-##  2 영동군       영동도로시 &lt;NA&gt; 
-##  3 목포시       목포시     &lt;NA&gt; 
-##  4 청주시       청주시     주시 
-##  5 함안군       함안도로시 &lt;NA&gt; 
-##  6 의령군       의령도로시 &lt;NA&gt; 
-##  7 나주시       나주시     주시 
-##  8 금천구       금천구     &lt;NA&gt; 
-##  9 중구         중구       &lt;NA&gt; 
-## 10 청양군       청양도로시 &lt;NA&gt;
-```
-
----
-
-## mutate() 함수와 함께 사용하기
-
-
-```r
-wifi %&gt;% 
-  distinct(설치시군구명) %&gt;% 
-  slice(1:10) %&gt;% 
-  mutate(
-    start = str_locate(설치시군구명, "구|군")[,1],
-    end = str_locate(설치시군구명, "구|군")[,2]
-  )
-```
-
-```
-## # A tibble: 10 x 3
-##    설치시군구명 start   end
-##    &lt;chr&gt;        &lt;int&gt; &lt;int&gt;
-##  1 청송군           3     3
-##  2 영동군           3     3
-##  3 목포시          NA    NA
-##  4 청주시          NA    NA
-##  5 함안군           3     3
-##  6 의령군           3     3
-##  7 나주시          NA    NA
-##  8 금천구           3     3
-##  9 중구             2     2
-## 10 청양군           3     3
-```
-
----
-
-## mutate() 함수와 함께 사용하기
-
-
-```r
-wifi %&gt;% 
-  distinct(설치시군구명) %&gt;% 
-  slice(1:10) %&gt;%
-  mutate(remove = str_remove(설치시군구명, "구|군|시"),
-         if_remove = if_else( str_length(설치시군구명) == 2,
-                    설치시군구명, str_remove(설치시군구명, "구|군|시")))
-```
-
-```
-## # A tibble: 10 x 3
-##    설치시군구명 remove if_remove
-##    &lt;chr&gt;        &lt;chr&gt;  &lt;chr&gt;    
-##  1 청송군       청송   청송     
-##  2 영동군       영동   영동     
-##  3 목포시       목포   목포     
-##  4 청주시       청주   청주     
-##  5 함안군       함안   함안     
-##  6 의령군       의령   의령     
-##  7 나주시       나주   나주     
-##  8 금천구       금천   금천     
-##  9 중구         중     중구     
-## 10 청양군       청양   청양
-```
-
----
-
-## filter()함수와 함께 사용하기
-
-
-```r
-wifi %&gt;% 
-  filter(str_detect(소재지도로명주소, "군"))
-```
-
-```
-## # A tibble: 3,866 x 17
-##    설치장소명 설치장소상세 설치시도명 설치시군구명 설치시설구분
-##    &lt;chr&gt;      &lt;chr&gt;        &lt;chr&gt;      &lt;chr&gt;        &lt;chr&gt;       
-##  1 청송군청   민원실       경상북도   청송군       관공서      
-##  2 청송군농업기술센터~ "\"1층, 2층, ~ 경상북도   청송군       관공서      
-##  3 청송읍사무소~ 민원실       경상북도   청송군       관공서      
-##  4 부동면사무소~ 민원실       경상북도   청송군       관공서      
-##  5 부남면사무소~ 민원실       경상북도   청송군       관공서      
-##  6 현동면사무소~ 민원실       경상북도   청송군       관공서      
-##  7 현서면사무소~ 민원실       경상북도   청송군       관공서      
-##  8 안덕면사무소~ 민원실       경상북도   청송군       관공서      
-##  9 파천면사무소~ 민원실       경상북도   청송군       관공서      
-## 10 진보면사무소~ 민원실       경상북도   청송군       관공서      
-## # ... with 3,856 more rows, and 12 more variables: 서비스제공사명 &lt;chr&gt;,
-## #   와이파이SSID &lt;chr&gt;, 설치년월 &lt;chr&gt;, 소재지도로명주소 &lt;chr&gt;,
-## #   소재지지번주소 &lt;chr&gt;, 관리기관명 &lt;chr&gt;, 관리기관전화번호 &lt;chr&gt;,
-## #   위도 &lt;chr&gt;, 경도 &lt;chr&gt;, 데이터기준일자 &lt;chr&gt;, 제공기관코드 &lt;chr&gt;,
-## #   제공기관명 &lt;chr&gt;
-```
-
----
-
-## filter()함수와 함께 사용하기
-
-
-```r
-wifi %&gt;% 
-  filter(str_starts(설치장소상세 , "민원")) %&gt;% 
-  distinct(설치장소상세)
-```
-
-```
-## # A tibble: 74 x 1
-##    설치장소상세         
-##    &lt;chr&gt;                
-##  1 민원실               
-##  2 민원실 에어컨 위     
-##  3 민원실 책상 상단 벽면
-##  4 민원 대기실          
-##  5 민원실 등            
-##  6 민원실(실내)         
-##  7 민원실내             
-##  8 민원실 및 휴게실 내  
-##  9 민원방문실           
-## 10 민원청사 2층         
-## # ... with 64 more rows
-```
-
----
-
-## filter()함수와 함께 사용하기
-
-
-```r
-wifi %&gt;% 
-  filter(str_starts(설치장소상세 , "민원")) %&gt;% 
-  count(설치장소상세, sort = T)
-```
-
-```
-## # A tibble: 74 x 2
-##    설치장소상세                                  n
-##    &lt;chr&gt;                                     &lt;int&gt;
-##  1 민원실                                     2636
-##  2 민원방문실                                   66
-##  3 민원실 내부                                  19
-##  4 민원실(실내)                                 16
-##  5 민원실(1층)                                  15
-##  6 민원대앞                                     12
-##  7 민원실+2층 복도(갤러리쉼터,전산교육장 등)    10
-##  8 민원실내                                      9
-##  9 민원 대기실                                   4
-## 10 민원실 천장                                   4
-## # ... with 64 more rows
-```
-
----
-
-## 정규표현식이란
-
-글자를 규칙이나 패턴으로 표현하는 문법 규칙의 일종
-
-R에서 사용할 때는 `\` 의 사용이 조금 달라서 바로 사용하기 매우 어려움
-
-```
-/^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.
-[a-zA-Z]{2,3}$
-```
-
-참고자료 : &lt;http://www.nextree.co.kr/p4327/&gt;
-
----
-
-## 글자 패턴 [rverbalexpressions][rverbalexpressions]
-
-정규표현식을 함수로 제공
-
-![](https://user-images.githubusercontent.com/6179259/60304627-f6f4b880-9974-11e9-8494-24ccc2cd8f38.png)
-
----
-
-## 날짜시간 자료형 [lubridate][lubridate]
-
-
-```r
-install.packages("lubridate")
-```
-
-![](https://user-images.githubusercontent.com/6179259/60305891-25749280-9979-11e9-81e4-25c9c3d8f805.png)
-
----
-
-## 글자를 날짜시간 자료형으로
-
----
-
-## 날짜시간 자료형에서 필요한 데이터 얻기
-
----
-
-## 시간 자료형 [hms][hms]
-
-
-```r
-install.packages("hms")
-```
-
-![](https://user-images.githubusercontent.com/6179259/60306118-fb6fa000-9979-11e9-8591-76e242e9288f.png)
 
 ---
 
@@ -830,6 +511,327 @@ hdcm %&gt;%
 
 ![](https://user-images.githubusercontent.com/6179259/60302194-32d84f80-996e-11e9-8909-5482332b7f14.png)
 
+
+---
+
+## 글자를 자유롭게 다루는 [stringr][stringr]
+
+
+```r
+install.packages("stringr")
+```
+
+![](https://user-images.githubusercontent.com/6179259/60305497-a7fc5280-9977-11e9-823e-4afb4605d6f8.png)
+
+---
+
+## 필요없는 공백 제거
+
+
+```r
+library(stringr)
+str_squish(" 안녕  하세요 \r\n\t") 
+```
+
+```
+## [1] "안녕 하세요"
+```
+
+---
+
+## 실습 데이터 설치
+
+
+```r
+remotes::install_github("mrchypark/krwifi")
+```
+
+```r
+library(krwifi)
+wifi
+```
+
+```
+## # A tibble: 21,473 x 17
+##    설치장소명 설치장소상세 설치시도명 설치시군구명 설치시설구분
+##    &lt;chr&gt;      &lt;chr&gt;        &lt;chr&gt;      &lt;chr&gt;        &lt;chr&gt;       
+##  1 청송군청   민원실       경상북도   청송군       관공서      
+##  2 청송군농업기술센터~ "\"1층, 2층, ~ 경상북도   청송군       관공서      
+##  3 청송읍사무소~ 민원실       경상북도   청송군       관공서      
+##  4 부동면사무소~ 민원실       경상북도   청송군       관공서      
+##  5 부남면사무소~ 민원실       경상북도   청송군       관공서      
+##  6 현동면사무소~ 민원실       경상북도   청송군       관공서      
+##  7 현서면사무소~ 민원실       경상북도   청송군       관공서      
+##  8 안덕면사무소~ 민원실       경상북도   청송군       관공서      
+##  9 파천면사무소~ 민원실       경상북도   청송군       관공서      
+## 10 진보면사무소~ 민원실       경상북도   청송군       관공서      
+## # ... with 21,463 more rows, and 12 more variables: 서비스제공사명 &lt;chr&gt;,
+## #   와이파이SSID &lt;chr&gt;, 설치년월 &lt;chr&gt;, 소재지도로명주소 &lt;chr&gt;,
+## #   소재지지번주소 &lt;chr&gt;, 관리기관명 &lt;chr&gt;, 관리기관전화번호 &lt;chr&gt;,
+## #   위도 &lt;chr&gt;, 경도 &lt;chr&gt;, 데이터기준일자 &lt;chr&gt;, 제공기관코드 &lt;chr&gt;,
+## #   제공기관명 &lt;chr&gt;
+```
+
+---
+
+## mutate() 함수와 함께 사용하기
+
+
+```r
+wifi %&gt;% 
+  distinct(소재지도로명주소) %&gt;% 
+  slice(1:10) %&gt;% 
+  mutate(len = str_length(소재지도로명주소),
+         gun_count = str_count(소재지도로명주소, "군")) 
+```
+
+```
+## # A tibble: 10 x 3
+##    소재지도로명주소                                     len gun_count
+##    &lt;chr&gt;                                              &lt;int&gt;     &lt;int&gt;
+##  1 경상북도 청송군 청송읍 군청로 51(월막리 330)          28         2
+##  2 경상북도 청송군 청송읍 주왕산로 177(송생리 720)       30         1
+##  3 경상북도 청송군 청송읍 중앙로 253(월막리 239-2)       31         1
+##  4 경상북도 청송군 부동면 이전앞길 1(이전리 829-5)       30         1
+##  5 경상북도 청송군 부남면 대전로 119(대전리 638-2)       31         1
+##  6 경상북도 청송군 현동면 청송로 2647(도평리 794-1)      32         1
+##  7 경상북도 청송군 현서면 구산동로 27(구산리 97-1)       30         1
+##  8 경상북도 청송군 안덕면 안덕로 82(명당리 433-6)        30         1
+##  9 경상북도 청송군 파천면 청송로 5544(관리 572-1)        31         1
+## 10 경상북도 청송군 진보면 진안동2길 4-10(진안리 51-1)    33         1
+```
+
+---
+
+## mutate() 함수와 함께 사용하기
+
+
+```r
+wifi %&gt;% 
+  distinct(설치시군구명) %&gt;% 
+  slice(1:10) %&gt;% 
+  mutate(repla = str_replace(설치시군구명, "군", "도로시"),
+         extra = str_extract(설치시군구명, "주시"))
+```
+
+```
+## # A tibble: 10 x 3
+##    설치시군구명 repla      extra
+##    &lt;chr&gt;        &lt;chr&gt;      &lt;chr&gt;
+##  1 청송군       청송도로시 &lt;NA&gt; 
+##  2 영동군       영동도로시 &lt;NA&gt; 
+##  3 목포시       목포시     &lt;NA&gt; 
+##  4 청주시       청주시     주시 
+##  5 함안군       함안도로시 &lt;NA&gt; 
+##  6 의령군       의령도로시 &lt;NA&gt; 
+##  7 나주시       나주시     주시 
+##  8 금천구       금천구     &lt;NA&gt; 
+##  9 중구         중구       &lt;NA&gt; 
+## 10 청양군       청양도로시 &lt;NA&gt;
+```
+
+---
+
+## mutate() 함수와 함께 사용하기
+
+
+```r
+wifi %&gt;% 
+  distinct(설치시군구명) %&gt;% 
+  slice(1:10) %&gt;% 
+  mutate(
+    start = str_locate(설치시군구명, "구|군")[,1],
+    end = str_locate(설치시군구명, "구|군")[,2]
+  )
+```
+
+```
+## # A tibble: 10 x 3
+##    설치시군구명 start   end
+##    &lt;chr&gt;        &lt;int&gt; &lt;int&gt;
+##  1 청송군           3     3
+##  2 영동군           3     3
+##  3 목포시          NA    NA
+##  4 청주시          NA    NA
+##  5 함안군           3     3
+##  6 의령군           3     3
+##  7 나주시          NA    NA
+##  8 금천구           3     3
+##  9 중구             2     2
+## 10 청양군           3     3
+```
+
+---
+
+## mutate() 함수와 함께 사용하기
+
+
+```r
+wifi %&gt;% 
+  distinct(설치시군구명) %&gt;% 
+  slice(1:10) %&gt;%
+  mutate(remove = str_remove(설치시군구명, "구|군|시"),
+         if_remove = if_else( str_length(설치시군구명) == 2,
+                    설치시군구명, str_remove(설치시군구명, "구|군|시")))
+```
+
+```
+## # A tibble: 10 x 3
+##    설치시군구명 remove if_remove
+##    &lt;chr&gt;        &lt;chr&gt;  &lt;chr&gt;    
+##  1 청송군       청송   청송     
+##  2 영동군       영동   영동     
+##  3 목포시       목포   목포     
+##  4 청주시       청주   청주     
+##  5 함안군       함안   함안     
+##  6 의령군       의령   의령     
+##  7 나주시       나주   나주     
+##  8 금천구       금천   금천     
+##  9 중구         중     중구     
+## 10 청양군       청양   청양
+```
+
+---
+
+## filter()함수와 함께 사용하기
+
+
+```r
+wifi %&gt;% 
+  filter(str_detect(소재지도로명주소, "군"))
+```
+
+```
+## # A tibble: 3,866 x 17
+##    설치장소명 설치장소상세 설치시도명 설치시군구명 설치시설구분
+##    &lt;chr&gt;      &lt;chr&gt;        &lt;chr&gt;      &lt;chr&gt;        &lt;chr&gt;       
+##  1 청송군청   민원실       경상북도   청송군       관공서      
+##  2 청송군농업기술센터~ "\"1층, 2층, ~ 경상북도   청송군       관공서      
+##  3 청송읍사무소~ 민원실       경상북도   청송군       관공서      
+##  4 부동면사무소~ 민원실       경상북도   청송군       관공서      
+##  5 부남면사무소~ 민원실       경상북도   청송군       관공서      
+##  6 현동면사무소~ 민원실       경상북도   청송군       관공서      
+##  7 현서면사무소~ 민원실       경상북도   청송군       관공서      
+##  8 안덕면사무소~ 민원실       경상북도   청송군       관공서      
+##  9 파천면사무소~ 민원실       경상북도   청송군       관공서      
+## 10 진보면사무소~ 민원실       경상북도   청송군       관공서      
+## # ... with 3,856 more rows, and 12 more variables: 서비스제공사명 &lt;chr&gt;,
+## #   와이파이SSID &lt;chr&gt;, 설치년월 &lt;chr&gt;, 소재지도로명주소 &lt;chr&gt;,
+## #   소재지지번주소 &lt;chr&gt;, 관리기관명 &lt;chr&gt;, 관리기관전화번호 &lt;chr&gt;,
+## #   위도 &lt;chr&gt;, 경도 &lt;chr&gt;, 데이터기준일자 &lt;chr&gt;, 제공기관코드 &lt;chr&gt;,
+## #   제공기관명 &lt;chr&gt;
+```
+
+---
+
+## filter()함수와 함께 사용하기
+
+
+```r
+wifi %&gt;% 
+  filter(str_starts(설치장소상세 , "민원")) %&gt;% 
+  distinct(설치장소상세)
+```
+
+```
+## # A tibble: 74 x 1
+##    설치장소상세         
+##    &lt;chr&gt;                
+##  1 민원실               
+##  2 민원실 에어컨 위     
+##  3 민원실 책상 상단 벽면
+##  4 민원 대기실          
+##  5 민원실 등            
+##  6 민원실(실내)         
+##  7 민원실내             
+##  8 민원실 및 휴게실 내  
+##  9 민원방문실           
+## 10 민원청사 2층         
+## # ... with 64 more rows
+```
+
+---
+
+## filter()함수와 함께 사용하기
+
+
+```r
+wifi %&gt;% 
+  filter(str_starts(설치장소상세 , "민원")) %&gt;% 
+  count(설치장소상세, sort = T)
+```
+
+```
+## # A tibble: 74 x 2
+##    설치장소상세                                  n
+##    &lt;chr&gt;                                     &lt;int&gt;
+##  1 민원실                                     2636
+##  2 민원방문실                                   66
+##  3 민원실 내부                                  19
+##  4 민원실(실내)                                 16
+##  5 민원실(1층)                                  15
+##  6 민원대앞                                     12
+##  7 민원실+2층 복도(갤러리쉼터,전산교육장 등)    10
+##  8 민원실내                                      9
+##  9 민원 대기실                                   4
+## 10 민원실 천장                                   4
+## # ... with 64 more rows
+```
+
+---
+
+## 정규표현식이란
+
+글자를 규칙이나 패턴으로 표현하는 문법 규칙의 일종
+
+R에서 사용할 때는 `\` 의 사용이 조금 달라서 바로 사용하기 매우 어려움
+
+```
+/^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.
+[a-zA-Z]{2,3}$
+```
+
+참고자료 : &lt;http://www.nextree.co.kr/p4327/&gt;
+
+---
+
+## 글자 패턴 [rverbalexpressions][rverbalexpressions]
+
+정규표현식을 함수로 제공
+
+![](https://user-images.githubusercontent.com/6179259/60304627-f6f4b880-9974-11e9-8494-24ccc2cd8f38.png)
+
+---
+
+## 날짜시간 자료형 [lubridate][lubridate]
+
+
+```r
+install.packages("lubridate")
+```
+
+![](https://user-images.githubusercontent.com/6179259/60305891-25749280-9979-11e9-81e4-25c9c3d8f805.png)
+
+---
+
+## 글자를 날짜시간 자료형으로
+
+---
+
+## 날짜시간 자료형에서 필요한 데이터 얻기
+
+---
+
+## 시간 자료형 [hms][hms]
+
+
+```r
+install.packages("hms")
+```
+
+![](https://user-images.githubusercontent.com/6179259/60306118-fb6fa000-9979-11e9-8591-76e242e9288f.png)
+
+
 ---
 
 ## 프로그래밍 흐름 처리 .small[(if, for)]
@@ -859,7 +861,7 @@ iris %&gt;%
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
 }
 
-#vdzysadctk .gt_table {
+#azuqxadfjv .gt_table {
   display: table;
   border-collapse: collapse;
   margin-left: auto;
@@ -878,13 +880,13 @@ iris %&gt;%
   /* table.border.top.color */
 }
 
-#vdzysadctk .gt_heading {
+#azuqxadfjv .gt_heading {
   background-color: #FFFFFF;
   /* heading.background.color */
   border-bottom-color: #FFFFFF;
 }
 
-#vdzysadctk .gt_title {
+#azuqxadfjv .gt_title {
   color: #000000;
   font-size: 125%;
   /* heading.title.font.size */
@@ -895,7 +897,7 @@ iris %&gt;%
   border-bottom-width: 0;
 }
 
-#vdzysadctk .gt_subtitle {
+#azuqxadfjv .gt_subtitle {
   color: #000000;
   font-size: 85%;
   /* heading.subtitle.font.size */
@@ -906,7 +908,7 @@ iris %&gt;%
   border-top-width: 0;
 }
 
-#vdzysadctk .gt_bottom_border {
+#azuqxadfjv .gt_bottom_border {
   border-bottom-style: solid;
   /* heading.border.bottom.style */
   border-bottom-width: 2px;
@@ -915,7 +917,7 @@ iris %&gt;%
   /* heading.border.bottom.color */
 }
 
-#vdzysadctk .gt_column_spanner {
+#azuqxadfjv .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #A8A8A8;
@@ -923,7 +925,7 @@ iris %&gt;%
   padding-bottom: 4px;
 }
 
-#vdzysadctk .gt_col_heading {
+#azuqxadfjv .gt_col_heading {
   color: #000000;
   background-color: #FFFFFF;
   /* column_labels.background.color */
@@ -936,11 +938,11 @@ iris %&gt;%
   margin: 10px;
 }
 
-#vdzysadctk .gt_sep_right {
+#azuqxadfjv .gt_sep_right {
   border-right: 5px solid #FFFFFF;
 }
 
-#vdzysadctk .gt_group_heading {
+#azuqxadfjv .gt_group_heading {
   padding: 8px;
   color: #000000;
   background-color: #FFFFFF;
@@ -964,7 +966,7 @@ iris %&gt;%
   vertical-align: middle;
 }
 
-#vdzysadctk .gt_empty_group_heading {
+#azuqxadfjv .gt_empty_group_heading {
   padding: 0.5px;
   color: #000000;
   background-color: #FFFFFF;
@@ -988,33 +990,33 @@ iris %&gt;%
   vertical-align: middle;
 }
 
-#vdzysadctk .gt_striped {
+#azuqxadfjv .gt_striped {
   background-color: #f2f2f2;
 }
 
-#vdzysadctk .gt_from_md > :first-child {
+#azuqxadfjv .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#vdzysadctk .gt_from_md > :last-child {
+#azuqxadfjv .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#vdzysadctk .gt_row {
+#azuqxadfjv .gt_row {
   padding: 8px;
   /* row.padding */
   margin: 10px;
   vertical-align: middle;
 }
 
-#vdzysadctk .gt_stub {
+#azuqxadfjv .gt_stub {
   border-right-style: solid;
   border-right-width: 2px;
   border-right-color: #A8A8A8;
   padding-left: 12px;
 }
 
-#vdzysadctk .gt_summary_row {
+#azuqxadfjv .gt_summary_row {
   color: #000000;
   background-color: #FFFFFF;
   /* summary_row.background.color */
@@ -1024,7 +1026,7 @@ iris %&gt;%
   /* summary_row.text_transform */
 }
 
-#vdzysadctk .gt_grand_summary_row {
+#azuqxadfjv .gt_grand_summary_row {
   color: #000000;
   background-color: #FFFFFF;
   /* grand_summary_row.background.color */
@@ -1034,19 +1036,19 @@ iris %&gt;%
   /* grand_summary_row.text_transform */
 }
 
-#vdzysadctk .gt_first_summary_row {
+#azuqxadfjv .gt_first_summary_row {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #A8A8A8;
 }
 
-#vdzysadctk .gt_first_grand_summary_row {
+#azuqxadfjv .gt_first_grand_summary_row {
   border-top-style: double;
   border-top-width: 6px;
   border-top-color: #A8A8A8;
 }
 
-#vdzysadctk .gt_table_body {
+#azuqxadfjv .gt_table_body {
   border-top-style: solid;
   /* table_body.border.top.style */
   border-top-width: 2px;
@@ -1061,55 +1063,55 @@ iris %&gt;%
   /* table_body.border.bottom.color */
 }
 
-#vdzysadctk .gt_footnote {
+#azuqxadfjv .gt_footnote {
   font-size: 90%;
   /* footnote.font.size */
   padding: 4px;
   /* footnote.padding */
 }
 
-#vdzysadctk .gt_sourcenote {
+#azuqxadfjv .gt_sourcenote {
   font-size: 90%;
   /* sourcenote.font.size */
   padding: 4px;
   /* sourcenote.padding */
 }
 
-#vdzysadctk .gt_center {
+#azuqxadfjv .gt_center {
   text-align: center;
 }
 
-#vdzysadctk .gt_left {
+#azuqxadfjv .gt_left {
   text-align: left;
 }
 
-#vdzysadctk .gt_right {
+#azuqxadfjv .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#vdzysadctk .gt_font_normal {
+#azuqxadfjv .gt_font_normal {
   font-weight: normal;
 }
 
-#vdzysadctk .gt_font_bold {
+#azuqxadfjv .gt_font_bold {
   font-weight: bold;
 }
 
-#vdzysadctk .gt_font_italic {
+#azuqxadfjv .gt_font_italic {
   font-style: italic;
 }
 
-#vdzysadctk .gt_super {
+#azuqxadfjv .gt_super {
   font-size: 65%;
 }
 
-#vdzysadctk .gt_footnote_glyph {
+#azuqxadfjv .gt_footnote_glyph {
   font-style: italic;
   font-size: 65%;
 }
 </style>
-<div id="vdzysadctk" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;"><!--gt table start-->
+<div id="azuqxadfjv" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;"><!--gt table start-->
 <table class='gt_table'>
 <tr>
 <th class='gt_col_heading gt_right' rowspan='1' colspan='1'>Sepal.Length</th>
@@ -1176,7 +1178,7 @@ iris %&gt;%
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
 }
 
-#ixzthftdad .gt_table {
+#tpavruqvbw .gt_table {
   display: table;
   border-collapse: collapse;
   margin-left: auto;
@@ -1195,13 +1197,13 @@ iris %&gt;%
   /* table.border.top.color */
 }
 
-#ixzthftdad .gt_heading {
+#tpavruqvbw .gt_heading {
   background-color: #FFFFFF;
   /* heading.background.color */
   border-bottom-color: #FFFFFF;
 }
 
-#ixzthftdad .gt_title {
+#tpavruqvbw .gt_title {
   color: #000000;
   font-size: 125%;
   /* heading.title.font.size */
@@ -1212,7 +1214,7 @@ iris %&gt;%
   border-bottom-width: 0;
 }
 
-#ixzthftdad .gt_subtitle {
+#tpavruqvbw .gt_subtitle {
   color: #000000;
   font-size: 85%;
   /* heading.subtitle.font.size */
@@ -1223,7 +1225,7 @@ iris %&gt;%
   border-top-width: 0;
 }
 
-#ixzthftdad .gt_bottom_border {
+#tpavruqvbw .gt_bottom_border {
   border-bottom-style: solid;
   /* heading.border.bottom.style */
   border-bottom-width: 2px;
@@ -1232,7 +1234,7 @@ iris %&gt;%
   /* heading.border.bottom.color */
 }
 
-#ixzthftdad .gt_column_spanner {
+#tpavruqvbw .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #A8A8A8;
@@ -1240,7 +1242,7 @@ iris %&gt;%
   padding-bottom: 4px;
 }
 
-#ixzthftdad .gt_col_heading {
+#tpavruqvbw .gt_col_heading {
   color: #000000;
   background-color: #FFFFFF;
   /* column_labels.background.color */
@@ -1253,11 +1255,11 @@ iris %&gt;%
   margin: 10px;
 }
 
-#ixzthftdad .gt_sep_right {
+#tpavruqvbw .gt_sep_right {
   border-right: 5px solid #FFFFFF;
 }
 
-#ixzthftdad .gt_group_heading {
+#tpavruqvbw .gt_group_heading {
   padding: 8px;
   color: #000000;
   background-color: #FFFFFF;
@@ -1281,7 +1283,7 @@ iris %&gt;%
   vertical-align: middle;
 }
 
-#ixzthftdad .gt_empty_group_heading {
+#tpavruqvbw .gt_empty_group_heading {
   padding: 0.5px;
   color: #000000;
   background-color: #FFFFFF;
@@ -1305,33 +1307,33 @@ iris %&gt;%
   vertical-align: middle;
 }
 
-#ixzthftdad .gt_striped {
+#tpavruqvbw .gt_striped {
   background-color: #f2f2f2;
 }
 
-#ixzthftdad .gt_from_md > :first-child {
+#tpavruqvbw .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#ixzthftdad .gt_from_md > :last-child {
+#tpavruqvbw .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#ixzthftdad .gt_row {
+#tpavruqvbw .gt_row {
   padding: 8px;
   /* row.padding */
   margin: 10px;
   vertical-align: middle;
 }
 
-#ixzthftdad .gt_stub {
+#tpavruqvbw .gt_stub {
   border-right-style: solid;
   border-right-width: 2px;
   border-right-color: #A8A8A8;
   padding-left: 12px;
 }
 
-#ixzthftdad .gt_summary_row {
+#tpavruqvbw .gt_summary_row {
   color: #000000;
   background-color: #FFFFFF;
   /* summary_row.background.color */
@@ -1341,7 +1343,7 @@ iris %&gt;%
   /* summary_row.text_transform */
 }
 
-#ixzthftdad .gt_grand_summary_row {
+#tpavruqvbw .gt_grand_summary_row {
   color: #000000;
   background-color: #FFFFFF;
   /* grand_summary_row.background.color */
@@ -1351,19 +1353,19 @@ iris %&gt;%
   /* grand_summary_row.text_transform */
 }
 
-#ixzthftdad .gt_first_summary_row {
+#tpavruqvbw .gt_first_summary_row {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #A8A8A8;
 }
 
-#ixzthftdad .gt_first_grand_summary_row {
+#tpavruqvbw .gt_first_grand_summary_row {
   border-top-style: double;
   border-top-width: 6px;
   border-top-color: #A8A8A8;
 }
 
-#ixzthftdad .gt_table_body {
+#tpavruqvbw .gt_table_body {
   border-top-style: solid;
   /* table_body.border.top.style */
   border-top-width: 2px;
@@ -1378,55 +1380,55 @@ iris %&gt;%
   /* table_body.border.bottom.color */
 }
 
-#ixzthftdad .gt_footnote {
+#tpavruqvbw .gt_footnote {
   font-size: 90%;
   /* footnote.font.size */
   padding: 4px;
   /* footnote.padding */
 }
 
-#ixzthftdad .gt_sourcenote {
+#tpavruqvbw .gt_sourcenote {
   font-size: 90%;
   /* sourcenote.font.size */
   padding: 4px;
   /* sourcenote.padding */
 }
 
-#ixzthftdad .gt_center {
+#tpavruqvbw .gt_center {
   text-align: center;
 }
 
-#ixzthftdad .gt_left {
+#tpavruqvbw .gt_left {
   text-align: left;
 }
 
-#ixzthftdad .gt_right {
+#tpavruqvbw .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#ixzthftdad .gt_font_normal {
+#tpavruqvbw .gt_font_normal {
   font-weight: normal;
 }
 
-#ixzthftdad .gt_font_bold {
+#tpavruqvbw .gt_font_bold {
   font-weight: bold;
 }
 
-#ixzthftdad .gt_font_italic {
+#tpavruqvbw .gt_font_italic {
   font-style: italic;
 }
 
-#ixzthftdad .gt_super {
+#tpavruqvbw .gt_super {
   font-size: 65%;
 }
 
-#ixzthftdad .gt_footnote_glyph {
+#tpavruqvbw .gt_footnote_glyph {
   font-style: italic;
   font-size: 65%;
 }
 </style>
-<div id="ixzthftdad" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;"><!--gt table start-->
+<div id="tpavruqvbw" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;"><!--gt table start-->
 <table class='gt_table'>
 <tr>
 <th class='gt_col_heading gt_right' rowspan='1' colspan='1'>Sepal.Length</th>
