@@ -400,7 +400,6 @@ hdcm_md %>%
 
 ![](https://user-images.githubusercontent.com/6179259/60302194-32d84f80-996e-11e9-8909-5482332b7f14.png)
 
-
 ---
 
 ## 글자를 자유롭게 다루는 [stringr][stringr]
@@ -637,6 +636,35 @@ fa("r-project", fill = "SteelBlue")
 fa("r-project", fill = "#4682B4")
 ```
 
+---
+
+## 함수 만들기
+
+`function()`로 만듬    
+`()` 괄호에는 입력으로 받을 값을 대표 이름을 작성함     
+`{}` 중괄호에는 괄호로 받은 대표 이름을 사용해서 코드를 작성하여 결과를 만듬    
+`return()` 함수는 `{}` 중괄호 안에서 최종 함수의 결과를 결정함 하나의 객체만 가능    
+`return()` 함수는 생략할 수 있음
+
+.pull-left[
+```{r}
+plus <- function(a, b){
+  tem <- a + b
+  return(tem)
+}
+plus(3, 5)
+```
+]
+.pull-right[
+```{r}
+plus_min <- function(a, b){
+  tem <- a + b
+  tem
+}
+plus_min(3, 5)
+```
+```
+]
 ---
 
 ## 신호등 만들기
