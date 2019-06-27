@@ -168,6 +168,7 @@ install.packages("stringr")
 ## 필요없는 공백 제거
 
 ```{r}
+library(stringr)
 str_squish(" 안녕  하세요 \r\n\t") 
 ```
 
