@@ -658,8 +658,7 @@ plus(3, 5)
 .pull-right[
 ```{r}
 plus_min <- function(a, b){
-  tem <- a + b
-  tem
+  a + b
 }
 plus_min(3, 5)
 ```
