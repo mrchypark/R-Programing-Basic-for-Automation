@@ -215,6 +215,7 @@ juniors_untidy
 key 컬럼 이름과 value 컬럼 이름을 정하고, long으로 바꿀 wide한 부분의 컬럼을 선택
 
 ```{r}
+library(tidyr)
 juniors_untidy %>% 
   gather(key = "spice",      # key  이름은 spice 로 하겠음
          value = "correct",  # value 이름은 correct로 하겠음
@@ -229,10 +230,11 @@ juniors_untidy %>%
 
 ## 실습용 패키지 설치
 
-실습을 위해 사용할 [tidyquant][tidyquant] 패키지는 미국 주식 데이터를 가져옵니다.
+실습을 위해 사용할 [tqk][tqk] 패키지는 한국 주식 데이터를 가져옵니다.
 
 ```{r eval=F}
-install.packages("tidyquant")
+install.packages("remotes")
+remotes::install_github("mrchypark/tqk")
 ```
 
 ---
@@ -240,13 +242,22 @@ install.packages("tidyquant")
 ## [tqk][tqk] 패키지 사용법
 
 ```{r eval=F}
-library(tidyquant)
+library(tqk)
 library(dplyr)
 
-## tq_get 함수는 미국 주식 코드를 바탕으로 데이터를 가져옵니다.
-tq_get("AAPL") ->
-  aapl
-aapl
+# 주식종목 코드를 가져옵니다.
+code_get() %>% 
+  # 그 중에 현대자동차를 찾습니다.
+  filter(str_detect(name, "현대자동차")) %>% 
+  # code 만 선택합니다.
+  select(code) %>% 
+  # code에 해당하는 주식의 데이터를 가져옵니다.
+  # 날짜의 범위를 지정할 수 있습니다.
+  tqk_get(from = "2019-01-01", to = "2019-02-28") %>% 
+  # 데이터에 현대자동차 주식이라는 것을 추가합니다.
+  mutate(comp = "현대자동차") -> 
+  hdcm
+hdcm
 ```
 
 ---
@@ -620,6 +631,7 @@ remotes::install_github("rstudio/fontawesome")
 [css 색][css 색]으로 채울 색을 지정한다. HEX도 사용가능. 이름의 대소문자를 구분하지 않음.
 
 ```{r}
+library(fontawesome)
 fa("r-project", fill = "SteelBlue")
 fa("r-project", fill = "#4682B4")
 ```
