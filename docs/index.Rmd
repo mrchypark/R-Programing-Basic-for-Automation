@@ -788,6 +788,25 @@ iris %>%
 ```
 
 ---
+## 프로그래밍 흐름 처리 2 - for
+
+연습문제 
+
+`iris` 데이터에서 `Species` 별로 데이터를 분리해서 개별 파일(총 3개의 파일)로 저장해주세요.
+
+```{r eval=F}
+tar <- iris$Species %>% 
+  as.character() %>% 
+  unique()
+
+for (i in 1:length(tar)){
+iris %>% 
+  filter(Species == tar[i]) %>% 
+  ... #<< 파일을 저장해주세요.
+}
+```
+
+---
 
 ## 예쁜 표 만들기 [gt][gt]
 
