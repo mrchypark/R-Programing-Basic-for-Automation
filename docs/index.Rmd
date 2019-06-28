@@ -355,7 +355,7 @@ juniors_about %>%
 
 `hdcm_md` 데이터를 아래 코드로 만들어 주세요.
 .pull-left[
-```{r}
+```{r message=F}
 library(lubridate)
 hdcm %>% 
   mutate(
