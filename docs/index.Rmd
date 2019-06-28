@@ -564,9 +564,227 @@ install.packages("hms")
 
 
 ---
+## 프로그래밍 흐름 처리 1 - if
 
-## 프로그래밍 흐름 처리 .small[(if, for)]
+조건은 TRUE/FALSE 중 하나의 결과가 나오는 연산이 들어가야 함.
 
+```{r eval=F}
+if (조건1) {  #<<
+  조건1이 TRUE일 때 실행할 내용
+} else if (조건2) { 
+  조건1이 FALSE이고 조건2가 TRUE일 때 실행할 내용
+} else {
+  조건1이 FALSE이고 조건2가 FALSE일 때 실행할 내용
+}
+```
+
+---
+## 프로그래밍 흐름 처리 1 - if
+
+`{}` 중괄호는 여러 코드의 줄을 실행하는 공간.    
+if 문 에서는 조건1이 TRUE 일 때만 접근할 수 있는 곳
+
+```{r eval=F}
+if (조건1) {  
+  조건1이 TRUE일 때 실행할 내용  #<<
+} else if (조건2) { 
+  조건1이 FALSE이고 조건2가 TRUE일 때 실행할 내용
+} else {
+  조건1이 FALSE이고 조건2가 FALSE일 때 실행할 내용
+}
+```
+
+---
+## 프로그래밍 흐름 처리 1 - if
+
+`else`는 앞의 `{}` 중괄호에 들어가지 않았다면 자신의 오른쪽에 있는 `{}` 중괄호에 들어가도록 허용
+
+```{r eval=F}
+if (조건1) {  
+  조건1이 TRUE일 때 실행할 내용  
+} else if (조건2) { 
+  조건1이 FALSE이고 조건2가 TRUE일 때 실행할 내용
+} else { #<<
+  조건1이 FALSE이고 조건2가 FALSE일 때 실행할 내용
+}
+```
+
+---
+## 프로그래밍 흐름 처리 1 - if
+
+`else`는 자신의 오른쪽에 있는 `{}` 중괄호가 새로운 `if`로 시작할 수 있음
+
+```{r eval=F}
+if (조건1) {  
+  조건1이 TRUE일 때 실행할 내용  
+} else if (조건2) {   #<<
+  조건1이 FALSE이고 조건2가 TRUE일 때 실행할 내용
+} else {
+  조건1이 FALSE이고 조건2가 FALSE일 때 실행할 내용
+}
+```
+
+---
+## 프로그래밍 흐름 처리 1 - if
+
+`if` 만 있는 구조도 가능함    
+
+```{r eval=F}
+if (조건1) {  
+  조건1이 TRUE일 때 실행할 내용  
+} 
+```
+
+---
+## 프로그래밍 흐름 처리 2 - for
+
+`val` : for문 안에서 사용할 대표값    
+`sequence` : for문이 사용할 데이터. 보통 1:10 같이 숫자 벡터를 많이 사용함.    
+`code with val` : 변수 val를 사용해서 수행할 코드를 작성
+
+```{r eval=F}
+for (val in sequence) {
+  code with val
+}
+```
+
+---
+## 프로그래밍 흐름 처리 2 - for
+
+`sequence` 부분에 사용할 데이터로써 벡터를 바로 사용할 수 있음.
+
+```{r}
+x <- c(2,5,3,9,8,11,6)
+count <- 0
+for (val in x) {
+  if(val %% 2 == 0) {
+    count = count+1
+  }
+}
+print(count)
+```
+
+---
+## 프로그래밍 흐름 처리 2 - for
+
+실제로는 아래처럼 많이 사용함
+
+```{r}
+x <- c(2,5,3,9,8,11,6)
+count <- 0
+for (val in 1:length(x)) {
+  if(x[val] %% 2 == 0) {
+    count = count+1
+  }
+}
+print(count)
+```
+
+---
+## 프로그래밍 흐름 처리 2 - for
+
+```{r}
+library(ggplot2)
+library(dplyr)
+
+iris %>% 
+  ggplot(aes(x = Sepal.Length, y=Sepal.Width )) +
+  geom_line()
+```
+
+---
+## 프로그래밍 흐름 처리 2 - for
+
+```{r}
+iris %>% 
+  filter(Species == "setosa") %>% 
+  ggplot(aes(x = Sepal.Length, y=Sepal.Width )) +
+  geom_line()
+```
+
+---
+
+## 프로그래밍 흐름 처리 2 - for
+
+```{r echo = F}
+tar <- iris$Species %>% 
+  as.character() %>% 
+  unique()
+```
+
+rmd에 3장의 `r tar` 종 각각의 line chart를 그려주세요.
+
+```{r eval=F}
+ggplot(aes(x = Sepal.Length, y=Sepal.Width )) +
+  geom_line()
+```
+
+---
+## 프로그래밍 흐름 처리 2 - for
+
+방법 1 : 코드 복사+붙여넣기
+
+```{r eval=F}
+iris %>% 
+  filter(Species == "setosa") %>% 
+  ggplot(aes(x = Sepal.Length, y=Sepal.Width )) +
+  geom_line()
+
+iris %>% 
+  filter(Species == "versicolor") %>% 
+  ggplot(aes(x = Sepal.Length, y=Sepal.Width )) +
+  geom_line()
+
+iris %>% 
+  filter(Species == "virginica") %>% 
+  ggplot(aes(x = Sepal.Length, y=Sepal.Width )) +
+  geom_line()
+```
+
+---
+## 프로그래밍 흐름 처리 2 - for
+
+방법 2 : 하드 코딩 제거
+
+```{r}
+tar <- iris$Species %>% 
+  as.character() %>% 
+  unique()
+```
+```{r eval=F}
+iris %>% 
+  filter(Species == tar[1]) %>% 
+  ggplot(aes(x = Sepal.Length, y=Sepal.Width )) +
+  geom_line()
+
+iris %>% 
+  filter(Species == tar[2]) %>% 
+  ggplot(aes(x = Sepal.Length, y=Sepal.Width )) +
+  geom_line()
+
+iris %>% 
+  filter(Species == tar[3]) %>% 
+  ggplot(aes(x = Sepal.Length, y=Sepal.Width )) +
+  geom_line()
+```
+
+---
+## 프로그래밍 흐름 처리 2 - for
+
+방법 3 : for 문 작성
+
+```{r eval=F}
+tar <- iris$Species %>% 
+  as.character() %>% 
+  unique()
+
+for (i in 1:length(tar)){
+iris %>% 
+  filter(Species == tar[i]) %>% 
+  ggplot(aes(x = Sepal.Length, y=Sepal.Width )) +
+  geom_line()
+}
+```
 
 ---
 
