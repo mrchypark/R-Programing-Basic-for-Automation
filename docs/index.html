@@ -1110,9 +1110,9 @@ tar &lt;- iris$Species %&gt;%
   unique()
 
 for (i in 1:length(tar)){
-iris %&gt;% 
-  filter(Species == tar[i]) -&gt; tem
-  ... #&lt;&lt; tem 을 파일로 저장해주세요.
+  iris %&gt;% 
+    filter(Species == tar[i]) -&gt; tem
+    ... #&lt;&lt; tem 을 파일로 저장해주세요.
 }
 ```
 
@@ -1864,25 +1864,29 @@ plus_min(3, 5)
 library(stringr)
 library(gt)
 library(fontawesome)
-tr_light_green &lt;- function(x) str_c(x, fa("circle", fill="green")
-tr_light_red &lt;- function(x) str_c(x, fa("circle", fill="red")
-tr_light_yellow &lt;- function(x) str_c(x, fa("circle", fill="yellow")
+tr_light_green &lt;- function(x) {
+    str_c(x, fa("circle", fill="green"))
+  }
+tr_light_red &lt;- function(x) {str_c(x, fa("circle", fill="red"))}
+
+tr_light_yellow &lt;- function(x) {str_c(x," ", fa("circle", fill="yellow"))}
+
 iris %&gt;% head(10) %&gt;% gt() %&gt;% 
   text_transform(
     locations = cells_data(
-      columns = "Sepal.Length", rows = Sepal.Length &gt; 5),
-    fn = tr_light_green )
-  ) %&gt;% 
+      columns = "Sepal.Length", 
+      rows = Sepal.Length &gt; 5),
+    fn = tr_light_green) %&gt;% 
   text_transform(
     locations = cells_data(
-      columns = "Sepal.Length", rows = Sepal.Length &lt; 5),
-    fn = tr_light_red)
-  ) %&gt;% 
+      columns = "Sepal.Length", 
+      rows = Sepal.Length &lt; 5),
+    fn = tr_light_red) %&gt;% 
   text_transform(
     locations = cells_data(
-      columns = "Sepal.Length", rows = Sepal.Length == 5),
+      columns = "Sepal.Length", 
+      rows = Sepal.Length == 5),
     fn = tr_light_yellow)
-  )
 ```
 
 ---
