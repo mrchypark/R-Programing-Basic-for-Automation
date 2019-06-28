@@ -782,7 +782,8 @@ for (i in 1:length(tar)){
 iris %>% 
   filter(Species == tar[i]) %>% 
   ggplot(aes(x = Sepal.Length, y=Sepal.Width )) +
-  geom_line()
+  geom_line() -> tem
+  print(tem)
 }
 ```
 
