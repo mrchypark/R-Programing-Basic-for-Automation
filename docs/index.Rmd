@@ -801,8 +801,8 @@ tar <- iris$Species %>%
 
 for (i in 1:length(tar)){
 iris %>% 
-  filter(Species == tar[i]) %>% 
-  ... #<< 파일을 저장해주세요.
+  filter(Species == tar[i]) -> tem
+  ... #<< tem 을 파일로 저장해주세요.
 }
 ```
 
