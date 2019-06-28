@@ -1864,28 +1864,18 @@ plus_min(3, 5)
 library(stringr)
 library(gt)
 library(fontawesome)
-tr_light_green &lt;- function(x) {
-    str_c(x, fa("circle", fill="green"))
-  }
+tr_light_green &lt;- function(x) {str_c(x, fa("circle", fill="green"))}
 tr_light_red &lt;- function(x) {str_c(x, fa("circle", fill="red"))}
-
 tr_light_yellow &lt;- function(x) {str_c(x," ", fa("circle", fill="yellow"))}
-
 iris %&gt;% head(10) %&gt;% gt() %&gt;% 
   text_transform(
-    locations = cells_data(
-      columns = "Sepal.Length", 
-      rows = Sepal.Length &gt; 5),
+    locations = cells_data(columns = "Sepal.Length", rows = Sepal.Length &gt; 5),
     fn = tr_light_green) %&gt;% 
   text_transform(
-    locations = cells_data(
-      columns = "Sepal.Length", 
-      rows = Sepal.Length &lt; 5),
+    locations = cells_data(columns = "Sepal.Length", rows = Sepal.Length &lt; 5),
     fn = tr_light_red) %&gt;% 
   text_transform(
-    locations = cells_data(
-      columns = "Sepal.Length", 
-      rows = Sepal.Length == 5),
+    locations = cells_data(columns = "Sepal.Length", rows = Sepal.Length == 5),
     fn = tr_light_yellow)
 ```
 

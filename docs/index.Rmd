@@ -910,28 +910,18 @@ plus_min(3, 5)
 library(stringr)
 library(gt)
 library(fontawesome)
-tr_light_green <- function(x) {
-    str_c(x, fa("circle", fill="green"))
-  }
+tr_light_green <- function(x) {str_c(x, fa("circle", fill="green"))}
 tr_light_red <- function(x) {str_c(x, fa("circle", fill="red"))}
-
 tr_light_yellow <- function(x) {str_c(x," ", fa("circle", fill="yellow"))}
-
 iris %>% head(10) %>% gt() %>% 
   text_transform(
-    locations = cells_data(
-      columns = "Sepal.Length", 
-      rows = Sepal.Length > 5),
+    locations = cells_data(columns = "Sepal.Length", rows = Sepal.Length > 5),
     fn = tr_light_green) %>% 
   text_transform(
-    locations = cells_data(
-      columns = "Sepal.Length", 
-      rows = Sepal.Length < 5),
+    locations = cells_data(columns = "Sepal.Length", rows = Sepal.Length < 5),
     fn = tr_light_red) %>% 
   text_transform(
-    locations = cells_data(
-      columns = "Sepal.Length", 
-      rows = Sepal.Length == 5),
+    locations = cells_data(columns = "Sepal.Length", rows = Sepal.Length == 5),
     fn = tr_light_yellow)
 ```
 
