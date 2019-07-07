@@ -51,15 +51,12 @@ class: center, middle, title-slide
 ## 목차
 
 1. 패키지 설치 방법 2 [remotes][remotes]
-    - 특정 패키지의 함수를 지정 `::`
 1. 데이터의 form 변환 [tidyr][tidyr]
 1. 연장을 더 챙겨드림 1 [janitor][janitor]
 1. 글자를 자유롭게 다루는 [stringr][stringr]
-    - 글자 패턴 [rverbalexpressions][rverbalexpressions]
 1. 날짜시간 자료형 [lubridate][lubridate]
 1. 프로그래밍 흐름 처리 if, for
 1. 예쁜 표 만들기 [gt][gt]
-    - 신호등 만들기 [fontawesome][fontawesome]
 1. 연장을 더 챙겨드림 2 [crosstalk][crosstalk] 
 
 ---
@@ -96,7 +93,7 @@ install_github("https://github.com/rstudio/gt")
 
 
 ```r
-install_github("https://github.com/rstudio/gt")
+install_github("https://github.com/sfirke/janitor")
 ```
 
 ![](https://user-images.githubusercontent.com/6179259/60295635-24366c00-995f-11e9-9211-22c69ba240a3.png)
@@ -213,26 +210,7 @@ gather() 함수는 미래의 key 이름과 value 이름을 받아서 wide form �
 
 ```r
 library(dplyr)
-```
 
-```
-## 
-## Attaching package: 'dplyr'
-```
-
-```
-## The following objects are masked from 'package:stats':
-## 
-##     filter, lag
-```
-
-```
-## The following objects are masked from 'package:base':
-## 
-##     intersect, setdiff, setequal, union
-```
-
-```r
 juniors_untidy &lt;- tribble(
   ~ "baker", ~"cinnamon_1", ~"cardamom_2", ~"nutmeg_3",
   "Emma", 1L,   0L, 1L,
@@ -259,14 +237,23 @@ juniors_untidy
 
 key 컬럼 이름과 value 컬럼 이름을 정하고, long으로 바꿀 wide한 부분의 컬럼을 선택
 
+.pull-left[
+
 
 ```r
 library(tidyr)
 juniors_untidy %&gt;% 
-  gather(key = "spice",      # key  이름은 spice 로 하겠음
-         value = "correct",  # value 이름은 correct로 하겠음
-         cinnamon_1:nutmeg_3)# 이 컬럼들을 사용하겠음
+  # key  이름은 spice 로 하겠음
+  gather(key = "spice",      
+  # value 이름은 correct로 하겠음
+         value = "correct",  
+  # 아래 컬럼들을 사용하겠음
+         cinnamon_1:nutmeg_3)
 ```
+
+]
+
+.pull-right[
 
 ```
 ## # A tibble: 12 x 3
@@ -285,6 +272,8 @@ juniors_untidy %&gt;%
 ## 11 Ruby   nutmeg_3         1
 ## 12 Zainab nutmeg_3         0
 ```
+]
+
 ---
 ## wide to long
 
@@ -319,7 +308,7 @@ code_get() %&gt;%
   select(code) %&gt;% 
   # code에 해당하는 주식의 데이터를 가져옵니다.
   # 날짜의 범위를 지정할 수 있습니다.
-  tqk_get(from = "2019-01-01", to = "2019-02-28") %&gt;% 
+  tqk_get(from = "2018-01-01", to = "2018-12-31") %&gt;% 
   # 데이터에 현대자동차 주식이라는 것을 추가합니다.
   mutate(comp = "현대자동차") -&gt; 
   hdcm
@@ -373,13 +362,41 @@ hdcm
 ## 10 2018-01-15 현대자동차 open  154000
 ## # ... with 1,454 more rows
 ```
-
 ---
 
 ## 연습문제 
 
-- 앞서 long form 으로 바꾼 데이터를 `hdcm_long`에 assign 하세요.
-- `hdcm_long` 에서 `type` 이 "volume"인 것은 제외해주세요.
+- "volume"은 다른 컬럼들과 의미가 다릅니다. 다른 컬럼들은 모두 가격을 뜻하는 반면, "volume"은 거래량을 뜻합니다. `hdcm` 데이터를 `gather()` 함수를 이용해서 long form으로 바꾸는데, `volume`은 제외해 주세요.
+
+---
+
+## 연습문제의 예시 답
+
+- 가격에 대한 정보를 가진 컬럼이 있으므로 wide form 이라 볼 수 있습니다.
+
+- 아래와 같이 `gather()` 함수를 사용합니다.
+
+
+```r
+hdcm %&gt;% 
+  gather(key = "type", value = "price", -date, -comp)
+```
+
+- `volume` 컬럼을 처음부터 빼거나, `gather()` 함수를 사용한 후에 `filter()` 하는 방법이 가능합니다.
+
+
+```r
+hdcm %&gt;% 
+  select(-volume) %&gt;% 
+  gather(key = "type", value = "price", -date, -comp)
+```
+
+
+```r
+hdcm %&gt;% 
+  gather(key = "type", value = "price", -date, -comp) %&gt;% 
+  filter(type != "volume")
+```
 
 ---
 
@@ -525,7 +542,18 @@ hdcm %&gt;%
 
 ---
 
+## 연습문제의 예시 답
+
+
+```r
+hdcm_md %&gt;% 
+  spread(month, mclose)
+```
+---
+
 ## 연장을 더 챙겨드림 1 [janitor][janitor]
+
+`janitor` 패키지는 데이터 전처리에 필요한 편의 함수들을 제공합니다.
 
 ![](https://user-images.githubusercontent.com/6179259/60302194-32d84f80-996e-11e9-8909-5482332b7f14.png)
 
@@ -995,7 +1023,7 @@ iris %&gt;%
   geom_line()
 ```
 
-![](index_files/figure-html/unnamed-chunk-40-1.png)&lt;!-- --&gt;
+![](index_files/figure-html/index-40-1.png)&lt;!-- --&gt;
 
 ---
 ## 프로그래밍 흐름 처리 2 - for
@@ -1008,7 +1036,7 @@ iris %&gt;%
   geom_line()
 ```
 
-![](index_files/figure-html/unnamed-chunk-41-1.png)&lt;!-- --&gt;
+![](index_files/figure-html/index-41-1.png)&lt;!-- --&gt;
 
 ---
 
@@ -1140,7 +1168,7 @@ iris %&gt;%
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
 }
 
-#azuqxadfjv .gt_table {
+#lkmfzgbqfx .gt_table {
   display: table;
   border-collapse: collapse;
   margin-left: auto;
@@ -1159,13 +1187,13 @@ iris %&gt;%
   /* table.border.top.color */
 }
 
-#azuqxadfjv .gt_heading {
+#lkmfzgbqfx .gt_heading {
   background-color: #FFFFFF;
   /* heading.background.color */
   border-bottom-color: #FFFFFF;
 }
 
-#azuqxadfjv .gt_title {
+#lkmfzgbqfx .gt_title {
   color: #000000;
   font-size: 125%;
   /* heading.title.font.size */
@@ -1176,7 +1204,7 @@ iris %&gt;%
   border-bottom-width: 0;
 }
 
-#azuqxadfjv .gt_subtitle {
+#lkmfzgbqfx .gt_subtitle {
   color: #000000;
   font-size: 85%;
   /* heading.subtitle.font.size */
@@ -1187,7 +1215,7 @@ iris %&gt;%
   border-top-width: 0;
 }
 
-#azuqxadfjv .gt_bottom_border {
+#lkmfzgbqfx .gt_bottom_border {
   border-bottom-style: solid;
   /* heading.border.bottom.style */
   border-bottom-width: 2px;
@@ -1196,7 +1224,7 @@ iris %&gt;%
   /* heading.border.bottom.color */
 }
 
-#azuqxadfjv .gt_column_spanner {
+#lkmfzgbqfx .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #A8A8A8;
@@ -1204,7 +1232,7 @@ iris %&gt;%
   padding-bottom: 4px;
 }
 
-#azuqxadfjv .gt_col_heading {
+#lkmfzgbqfx .gt_col_heading {
   color: #000000;
   background-color: #FFFFFF;
   /* column_labels.background.color */
@@ -1217,11 +1245,11 @@ iris %&gt;%
   margin: 10px;
 }
 
-#azuqxadfjv .gt_sep_right {
+#lkmfzgbqfx .gt_sep_right {
   border-right: 5px solid #FFFFFF;
 }
 
-#azuqxadfjv .gt_group_heading {
+#lkmfzgbqfx .gt_group_heading {
   padding: 8px;
   color: #000000;
   background-color: #FFFFFF;
@@ -1245,7 +1273,7 @@ iris %&gt;%
   vertical-align: middle;
 }
 
-#azuqxadfjv .gt_empty_group_heading {
+#lkmfzgbqfx .gt_empty_group_heading {
   padding: 0.5px;
   color: #000000;
   background-color: #FFFFFF;
@@ -1269,33 +1297,33 @@ iris %&gt;%
   vertical-align: middle;
 }
 
-#azuqxadfjv .gt_striped {
+#lkmfzgbqfx .gt_striped {
   background-color: #f2f2f2;
 }
 
-#azuqxadfjv .gt_from_md > :first-child {
+#lkmfzgbqfx .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#azuqxadfjv .gt_from_md > :last-child {
+#lkmfzgbqfx .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#azuqxadfjv .gt_row {
+#lkmfzgbqfx .gt_row {
   padding: 8px;
   /* row.padding */
   margin: 10px;
   vertical-align: middle;
 }
 
-#azuqxadfjv .gt_stub {
+#lkmfzgbqfx .gt_stub {
   border-right-style: solid;
   border-right-width: 2px;
   border-right-color: #A8A8A8;
   padding-left: 12px;
 }
 
-#azuqxadfjv .gt_summary_row {
+#lkmfzgbqfx .gt_summary_row {
   color: #000000;
   background-color: #FFFFFF;
   /* summary_row.background.color */
@@ -1305,7 +1333,7 @@ iris %&gt;%
   /* summary_row.text_transform */
 }
 
-#azuqxadfjv .gt_grand_summary_row {
+#lkmfzgbqfx .gt_grand_summary_row {
   color: #000000;
   background-color: #FFFFFF;
   /* grand_summary_row.background.color */
@@ -1315,19 +1343,19 @@ iris %&gt;%
   /* grand_summary_row.text_transform */
 }
 
-#azuqxadfjv .gt_first_summary_row {
+#lkmfzgbqfx .gt_first_summary_row {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #A8A8A8;
 }
 
-#azuqxadfjv .gt_first_grand_summary_row {
+#lkmfzgbqfx .gt_first_grand_summary_row {
   border-top-style: double;
   border-top-width: 6px;
   border-top-color: #A8A8A8;
 }
 
-#azuqxadfjv .gt_table_body {
+#lkmfzgbqfx .gt_table_body {
   border-top-style: solid;
   /* table_body.border.top.style */
   border-top-width: 2px;
@@ -1342,55 +1370,55 @@ iris %&gt;%
   /* table_body.border.bottom.color */
 }
 
-#azuqxadfjv .gt_footnote {
+#lkmfzgbqfx .gt_footnote {
   font-size: 90%;
   /* footnote.font.size */
   padding: 4px;
   /* footnote.padding */
 }
 
-#azuqxadfjv .gt_sourcenote {
+#lkmfzgbqfx .gt_sourcenote {
   font-size: 90%;
   /* sourcenote.font.size */
   padding: 4px;
   /* sourcenote.padding */
 }
 
-#azuqxadfjv .gt_center {
+#lkmfzgbqfx .gt_center {
   text-align: center;
 }
 
-#azuqxadfjv .gt_left {
+#lkmfzgbqfx .gt_left {
   text-align: left;
 }
 
-#azuqxadfjv .gt_right {
+#lkmfzgbqfx .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#azuqxadfjv .gt_font_normal {
+#lkmfzgbqfx .gt_font_normal {
   font-weight: normal;
 }
 
-#azuqxadfjv .gt_font_bold {
+#lkmfzgbqfx .gt_font_bold {
   font-weight: bold;
 }
 
-#azuqxadfjv .gt_font_italic {
+#lkmfzgbqfx .gt_font_italic {
   font-style: italic;
 }
 
-#azuqxadfjv .gt_super {
+#lkmfzgbqfx .gt_super {
   font-size: 65%;
 }
 
-#azuqxadfjv .gt_footnote_glyph {
+#lkmfzgbqfx .gt_footnote_glyph {
   font-style: italic;
   font-size: 65%;
 }
 </style>
-<div id="azuqxadfjv" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;"><!--gt table start-->
+<div id="lkmfzgbqfx" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;"><!--gt table start-->
 <table class='gt_table'>
 <tr>
 <th class='gt_col_heading gt_right' rowspan='1' colspan='1'>Sepal.Length</th>
@@ -1457,7 +1485,7 @@ iris %&gt;%
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
 }
 
-#tpavruqvbw .gt_table {
+#qzvflapimc .gt_table {
   display: table;
   border-collapse: collapse;
   margin-left: auto;
@@ -1476,13 +1504,13 @@ iris %&gt;%
   /* table.border.top.color */
 }
 
-#tpavruqvbw .gt_heading {
+#qzvflapimc .gt_heading {
   background-color: #FFFFFF;
   /* heading.background.color */
   border-bottom-color: #FFFFFF;
 }
 
-#tpavruqvbw .gt_title {
+#qzvflapimc .gt_title {
   color: #000000;
   font-size: 125%;
   /* heading.title.font.size */
@@ -1493,7 +1521,7 @@ iris %&gt;%
   border-bottom-width: 0;
 }
 
-#tpavruqvbw .gt_subtitle {
+#qzvflapimc .gt_subtitle {
   color: #000000;
   font-size: 85%;
   /* heading.subtitle.font.size */
@@ -1504,7 +1532,7 @@ iris %&gt;%
   border-top-width: 0;
 }
 
-#tpavruqvbw .gt_bottom_border {
+#qzvflapimc .gt_bottom_border {
   border-bottom-style: solid;
   /* heading.border.bottom.style */
   border-bottom-width: 2px;
@@ -1513,7 +1541,7 @@ iris %&gt;%
   /* heading.border.bottom.color */
 }
 
-#tpavruqvbw .gt_column_spanner {
+#qzvflapimc .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #A8A8A8;
@@ -1521,7 +1549,7 @@ iris %&gt;%
   padding-bottom: 4px;
 }
 
-#tpavruqvbw .gt_col_heading {
+#qzvflapimc .gt_col_heading {
   color: #000000;
   background-color: #FFFFFF;
   /* column_labels.background.color */
@@ -1534,11 +1562,11 @@ iris %&gt;%
   margin: 10px;
 }
 
-#tpavruqvbw .gt_sep_right {
+#qzvflapimc .gt_sep_right {
   border-right: 5px solid #FFFFFF;
 }
 
-#tpavruqvbw .gt_group_heading {
+#qzvflapimc .gt_group_heading {
   padding: 8px;
   color: #000000;
   background-color: #FFFFFF;
@@ -1562,7 +1590,7 @@ iris %&gt;%
   vertical-align: middle;
 }
 
-#tpavruqvbw .gt_empty_group_heading {
+#qzvflapimc .gt_empty_group_heading {
   padding: 0.5px;
   color: #000000;
   background-color: #FFFFFF;
@@ -1586,33 +1614,33 @@ iris %&gt;%
   vertical-align: middle;
 }
 
-#tpavruqvbw .gt_striped {
+#qzvflapimc .gt_striped {
   background-color: #f2f2f2;
 }
 
-#tpavruqvbw .gt_from_md > :first-child {
+#qzvflapimc .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#tpavruqvbw .gt_from_md > :last-child {
+#qzvflapimc .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#tpavruqvbw .gt_row {
+#qzvflapimc .gt_row {
   padding: 8px;
   /* row.padding */
   margin: 10px;
   vertical-align: middle;
 }
 
-#tpavruqvbw .gt_stub {
+#qzvflapimc .gt_stub {
   border-right-style: solid;
   border-right-width: 2px;
   border-right-color: #A8A8A8;
   padding-left: 12px;
 }
 
-#tpavruqvbw .gt_summary_row {
+#qzvflapimc .gt_summary_row {
   color: #000000;
   background-color: #FFFFFF;
   /* summary_row.background.color */
@@ -1622,7 +1650,7 @@ iris %&gt;%
   /* summary_row.text_transform */
 }
 
-#tpavruqvbw .gt_grand_summary_row {
+#qzvflapimc .gt_grand_summary_row {
   color: #000000;
   background-color: #FFFFFF;
   /* grand_summary_row.background.color */
@@ -1632,19 +1660,19 @@ iris %&gt;%
   /* grand_summary_row.text_transform */
 }
 
-#tpavruqvbw .gt_first_summary_row {
+#qzvflapimc .gt_first_summary_row {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #A8A8A8;
 }
 
-#tpavruqvbw .gt_first_grand_summary_row {
+#qzvflapimc .gt_first_grand_summary_row {
   border-top-style: double;
   border-top-width: 6px;
   border-top-color: #A8A8A8;
 }
 
-#tpavruqvbw .gt_table_body {
+#qzvflapimc .gt_table_body {
   border-top-style: solid;
   /* table_body.border.top.style */
   border-top-width: 2px;
@@ -1659,55 +1687,55 @@ iris %&gt;%
   /* table_body.border.bottom.color */
 }
 
-#tpavruqvbw .gt_footnote {
+#qzvflapimc .gt_footnote {
   font-size: 90%;
   /* footnote.font.size */
   padding: 4px;
   /* footnote.padding */
 }
 
-#tpavruqvbw .gt_sourcenote {
+#qzvflapimc .gt_sourcenote {
   font-size: 90%;
   /* sourcenote.font.size */
   padding: 4px;
   /* sourcenote.padding */
 }
 
-#tpavruqvbw .gt_center {
+#qzvflapimc .gt_center {
   text-align: center;
 }
 
-#tpavruqvbw .gt_left {
+#qzvflapimc .gt_left {
   text-align: left;
 }
 
-#tpavruqvbw .gt_right {
+#qzvflapimc .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#tpavruqvbw .gt_font_normal {
+#qzvflapimc .gt_font_normal {
   font-weight: normal;
 }
 
-#tpavruqvbw .gt_font_bold {
+#qzvflapimc .gt_font_bold {
   font-weight: bold;
 }
 
-#tpavruqvbw .gt_font_italic {
+#qzvflapimc .gt_font_italic {
   font-style: italic;
 }
 
-#tpavruqvbw .gt_super {
+#qzvflapimc .gt_super {
   font-size: 65%;
 }
 
-#tpavruqvbw .gt_footnote_glyph {
+#qzvflapimc .gt_footnote_glyph {
   font-style: italic;
   font-size: 65%;
 }
 </style>
-<div id="tpavruqvbw" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;"><!--gt table start-->
+<div id="qzvflapimc" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;"><!--gt table start-->
 <table class='gt_table'>
 <tr>
 <th class='gt_col_heading gt_right' rowspan='1' colspan='1'>Sepal.Length</th>

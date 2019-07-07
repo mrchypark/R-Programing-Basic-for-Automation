@@ -42,15 +42,12 @@ class: center, middle, title-slide
 ## 목차
 
 1. 패키지 설치 방법 2 [remotes][remotes]
-    - 특정 패키지의 함수를 지정 `::`
 1. 데이터의 form 변환 [tidyr][tidyr]
 1. 연장을 더 챙겨드림 1 [janitor][janitor]
 1. 글자를 자유롭게 다루는 [stringr][stringr]
-    - 글자 패턴 [rverbalexpressions][rverbalexpressions]
 1. 날짜시간 자료형 [lubridate][lubridate]
 1. 프로그래밍 흐름 처리 if, for
 1. 예쁜 표 만들기 [gt][gt]
-    - 신호등 만들기 [fontawesome][fontawesome]
 1. 연장을 더 챙겨드림 2 [crosstalk][crosstalk] 
 
 ---
@@ -58,7 +55,7 @@ class: center, middle, title-slide
 
 `remotes` 패키지는 `cran`이 아닌 곳에서 제공하는 패키지를 설치하는 함수를 제공
 
-```{r eval=F}
+```{r index-1, eval=F}
 ## 패키지 설치 방법 1
 install.packages("remotes")
 
@@ -84,8 +81,8 @@ install_github("https://github.com/rstudio/gt")
 
 패키지의 github 주소를 바로 사용하면 설치 진행
 
-```{r eval=F}
-install_github("https://github.com/rstudio/gt")
+```{r index-2, eval=F}
+install_github("https://github.com/sfirke/janitor")
 ```
 
 ![](https://user-images.githubusercontent.com/6179259/60295635-24366c00-995f-11e9-9211-22c69ba240a3.png)
@@ -104,7 +101,7 @@ install_github("https://github.com/rstudio/gt")
 
 `패키지이름::함수이름()` 으로 작성하면 어느 패키지의 함수인지 알 수 있음.
 
-```{r eval=F}
+```{r index-3, eval=F}
 install_github("https://github.com/rstudio/gt")
 remotes::install_github("https://github.com/rstudio/gt")
 ```
@@ -115,7 +112,7 @@ remotes::install_github("https://github.com/rstudio/gt")
 
 dplyr 패키지의 경우 많은 함수 이름이 다른 패키지와 겹침 
 
-```{r eval=F}
+```{r index-4, eval=F}
 library(dplyr)
 ```
 
@@ -140,7 +137,7 @@ library(dplyr)
 
 혹시 `filter()` 함수가 문제가 생기면, 아래 처럼 해보세요.
 
-```{r eval=F}
+```{r index-5, eval=F}
 ## dplyr 내의 모든 함수를 바로 사용하기 위해서 불러옴
 library(dplyr)
 
@@ -157,7 +154,7 @@ dplyr::filter()
 
 ## 데이터의 form 변환 [tidyr][tidyr]
 
-```{r eval=F}
+```{r index-6, eval=F}
 install.packages("tidyr")
 ```
 
@@ -195,7 +192,7 @@ gather() 함수는 미래의 key 이름과 value 이름을 받아서 wide form �
 
 예시 데이터 만들기
 
-```{r}
+```{r index-7}
 library(dplyr)
 
 juniors_untidy <- tribble(
@@ -214,13 +211,31 @@ juniors_untidy
 
 key 컬럼 이름과 value 컬럼 이름을 정하고, long으로 바꿀 wide한 부분의 컬럼을 선택
 
-```{r}
+.pull-left[
+
+```{r eval=F, index-8}
+library(tidyr)
+juniors_untidy %>% 
+  # key  이름은 spice 로 하겠음
+  gather(key = "spice",      
+  # value 이름은 correct로 하겠음
+         value = "correct",  
+  # 아래 컬럼들을 사용하겠음
+         cinnamon_1:nutmeg_3)
+```
+
+]
+
+.pull-right[
+```{r echo=F, print-1}
 library(tidyr)
 juniors_untidy %>% 
   gather(key = "spice",      # key  이름은 spice 로 하겠음
          value = "correct",  # value 이름은 correct로 하겠음
          cinnamon_1:nutmeg_3)# 이 컬럼들을 사용하겠음
 ```
+]
+
 ---
 ## wide to long
 
@@ -232,7 +247,7 @@ juniors_untidy %>%
 
 실습을 위해 사용할 [tqk][tqk] 패키지는 한국 주식 데이터를 가져옵니다.
 
-```{r eval=F}
+```{r index-9, eval=F}
 install.packages("remotes")
 remotes::install_github("mrchypark/tqk")
 ```
@@ -241,7 +256,7 @@ remotes::install_github("mrchypark/tqk")
 
 ## [tqk][tqk] 패키지 사용법
 
-```{r eval=F}
+```{r index-10, eval=F}
 library(tqk)
 library(dplyr)
 
@@ -253,7 +268,7 @@ code_get() %>%
   select(code) %>% 
   # code에 해당하는 주식의 데이터를 가져옵니다.
   # 날짜의 범위를 지정할 수 있습니다.
-  tqk_get(from = "2019-01-01", to = "2019-02-28") %>% 
+  tqk_get(from = "2018-01-01", to = "2018-12-31") %>% 
   # 데이터에 현대자동차 주식이라는 것을 추가합니다.
   mutate(comp = "현대자동차") -> 
   hdcm
@@ -264,7 +279,7 @@ hdcm
 
 ## [tqk][tqk] 패키지 사용법
 
-```{r cache=T, echo=F}
+```{r index-11, cache=T, echo=F}
 library(tqk)
 library(dplyr)
 library(stringr)
@@ -286,17 +301,42 @@ hdcm
 
 - `hdcm` 데이터를 `gather()` 함수를 이용해서 아래와 같이 long form 으로 바꾸어 보세요.
 
-```{r echo=F}
+```{r index-12, echo=F}
 hdcm %>% 
   gather(key = "type", value = "price", -date, -comp)
 ```
-
 ---
 
 ## 연습문제 
 
-- 앞서 long form 으로 바꾼 데이터를 `hdcm_long`에 assign 하세요.
-- `hdcm_long` 에서 `type` 이 "volume"인 것은 제외해주세요.
+- "volume"은 다른 컬럼들과 의미가 다릅니다. 다른 컬럼들은 모두 가격을 뜻하는 반면, "volume"은 거래량을 뜻합니다. `hdcm` 데이터를 `gather()` 함수를 이용해서 long form으로 바꾸는데, `volume`은 제외해 주세요.
+
+---
+
+## 연습문제의 예시 답
+
+- 가격에 대한 정보를 가진 컬럼이 있으므로 wide form 이라 볼 수 있습니다.
+
+- 아래와 같이 `gather()` 함수를 사용합니다.
+
+```{r eval=F, solve-1}
+hdcm %>% 
+  gather(key = "type", value = "price", -date, -comp)
+```
+
+- `volume` 컬럼을 처음부터 빼거나, `gather()` 함수를 사용한 후에 `filter()` 하는 방법이 가능합니다.
+
+```{r eval=F, solve-2}
+hdcm %>% 
+  select(-volume) %>% 
+  gather(key = "type", value = "price", -date, -comp)
+```
+
+```{r eval=F, solve-3}
+hdcm %>% 
+  gather(key = "type", value = "price", -date, -comp) %>% 
+  filter(type != "volume")
+```
 
 ---
 
@@ -312,7 +352,7 @@ spead() 함수는 wide form 데이터에서 key column과 value column을 받아
 
 예시 데이터 만들기
 .pull-left[
-```{r}
+```{r index-13}
 library(dplyr)
 
 juniors_about <- tribble(
@@ -329,7 +369,7 @@ juniors_about <- tribble(
 ```
 ]
 .pull-right[
-```{r echo=F}
+```{r index-14, echo=F}
 juniors_about
 ```
 ]
@@ -339,7 +379,7 @@ juniors_about
 
 key 컬럼 이름과 value 컬럼 이름을 정하고, long으로 바꿀 wide한 부분의 컬럼을 선택
 
-```{r}
+```{r index-15}
 juniors_about %>% 
   spread(var_name, var_value)
 ```
@@ -355,7 +395,7 @@ juniors_about %>%
 
 `hdcm_md` 데이터를 아래 코드로 만들어 주세요.
 .pull-left[
-```{r message=F}
+```{r index-16, message=F}
 library(lubridate)
 hdcm %>% 
   mutate(
@@ -377,7 +417,7 @@ hdcm %>%
 ```
 ]
 .pull-right[
-```{r echo=F}
+```{r index-17, echo=F}
 hdcm_md
 ```
 ]
@@ -388,14 +428,24 @@ hdcm_md
 
 1. `hdcm_md` 데이터를 아래와 같이 월 컬럼을 만들어 주세요.
 
-```{r echo=F}
+```{r index-18, echo=F}
 hdcm_md %>% 
   spread(month, mclose)
 ```
 
 ---
 
+## 연습문제의 예시 답
+
+```{r solve-18, eval=F}
+hdcm_md %>% 
+  spread(month, mclose)
+```
+---
+
 ## 연장을 더 챙겨드림 1 [janitor][janitor]
+
+`janitor` 패키지는 데이터 전처리에 필요한 편의 함수들을 제공합니다.
 
 ![](https://user-images.githubusercontent.com/6179259/60302194-32d84f80-996e-11e9-8909-5482332b7f14.png)
 
@@ -403,7 +453,7 @@ hdcm_md %>%
 
 ## 글자를 자유롭게 다루는 [stringr][stringr]
 
-```{r eval=F}
+```{r index-19, eval=F}
 install.packages("stringr")
 ```
 
@@ -413,7 +463,7 @@ install.packages("stringr")
 
 ## 필요없는 공백 제거
 
-```{r}
+```{r index-20}
 library(stringr)
 str_squish(" 안녕  하세요 \r\n\t") 
 ```
@@ -422,10 +472,10 @@ str_squish(" 안녕  하세요 \r\n\t")
 
 ## 실습 데이터 설치
 
-```{r eval=F}
+```{r index-21, eval=F}
 remotes::install_github("mrchypark/krwifi")
 ```
-```{r}
+```{r index-22}
 library(krwifi)
 wifi
 ```
@@ -434,7 +484,7 @@ wifi
 
 ## mutate() 함수와 함께 사용하기
 
-```{r}
+```{r index-23}
 wifi %>% 
   distinct(소재지도로명주소) %>% 
   slice(1:10) %>% 
@@ -447,7 +497,7 @@ wifi %>%
 
 ## mutate() 함수와 함께 사용하기
 
-```{r}
+```{r index-24}
 wifi %>% 
   distinct(설치시군구명) %>% 
   slice(1:10) %>% 
@@ -459,7 +509,7 @@ wifi %>%
 
 ## mutate() 함수와 함께 사용하기
 
-```{r}
+```{r index-25}
 wifi %>% 
   distinct(설치시군구명) %>% 
   slice(1:10) %>% 
@@ -473,7 +523,7 @@ wifi %>%
 
 ## mutate() 함수와 함께 사용하기
 
-```{r}
+```{r index-26}
 wifi %>% 
   distinct(설치시군구명) %>% 
   slice(1:10) %>%
@@ -486,7 +536,7 @@ wifi %>%
 
 ## filter()함수와 함께 사용하기
 
-```{r}
+```{r index-27}
 wifi %>% 
   filter(str_detect(소재지도로명주소, "군"))
 ```
@@ -495,7 +545,7 @@ wifi %>%
 
 ## filter()함수와 함께 사용하기
 
-```{r}
+```{r index-28}
 wifi %>% 
   filter(str_starts(설치장소상세 , "민원")) %>% 
   distinct(설치장소상세)
@@ -505,7 +555,7 @@ wifi %>%
 
 ## filter()함수와 함께 사용하기
 
-```{r}
+```{r index-29}
 wifi %>% 
   filter(str_starts(설치장소상세 , "민원")) %>% 
   count(설치장소상세, sort = T)
@@ -538,7 +588,7 @@ R에서 사용할 때는 `\` 의 사용이 조금 달라서 바로 사용하기 
 
 ## 날짜시간 자료형 [lubridate][lubridate]
 
-```{r eval=F}
+```{r index-30, eval=F}
 install.packages("lubridate")
 ```
 
@@ -556,7 +606,7 @@ install.packages("lubridate")
 
 ## 시간 자료형 [hms][hms]
 
-```{r eval=F}
+```{r index-31, eval=F}
 install.packages("hms")
 ```
 
@@ -568,7 +618,7 @@ install.packages("hms")
 
 조건은 TRUE/FALSE 중 하나의 결과가 나오는 연산이 들어가야 함.
 
-```{r eval=F}
+```{r index-32, eval=F}
 if (조건1) {  #<<
   조건1이 TRUE일 때 실행할 내용
 } else if (조건2) { 
@@ -584,7 +634,7 @@ if (조건1) {  #<<
 `{}` 중괄호는 여러 코드의 줄을 실행하는 공간.    
 if 문 에서는 조건1이 TRUE 일 때만 접근할 수 있는 곳
 
-```{r eval=F}
+```{r index-33, eval=F}
 if (조건1) {  
   조건1이 TRUE일 때 실행할 내용  #<<
 } else if (조건2) { 
@@ -599,7 +649,7 @@ if (조건1) {
 
 `else`는 앞의 `{}` 중괄호에 들어가지 않았다면 자신의 오른쪽에 있는 `{}` 중괄호에 들어가도록 허용
 
-```{r eval=F}
+```{r index-34, eval=F}
 if (조건1) {  
   조건1이 TRUE일 때 실행할 내용  
 } else if (조건2) { 
@@ -614,7 +664,7 @@ if (조건1) {
 
 `else`는 자신의 오른쪽에 있는 `{}` 중괄호가 새로운 `if`로 시작할 수 있음
 
-```{r eval=F}
+```{r index-35, eval=F}
 if (조건1) {  
   조건1이 TRUE일 때 실행할 내용  
 } else if (조건2) {   #<<
@@ -629,7 +679,7 @@ if (조건1) {
 
 `if` 만 있는 구조도 가능함    
 
-```{r eval=F}
+```{r index-36, eval=F}
 if (조건1) {  
   조건1이 TRUE일 때 실행할 내용  
 } 
@@ -642,7 +692,7 @@ if (조건1) {
 `sequence` : for문이 사용할 데이터. 보통 1:10 같이 숫자 벡터를 많이 사용함.    
 `code with val` : 변수 val를 사용해서 수행할 코드를 작성
 
-```{r eval=F}
+```{r index-37, eval=F}
 for (val in sequence) {
   code with val
 }
@@ -653,7 +703,7 @@ for (val in sequence) {
 
 `sequence` 부분에 사용할 데이터로써 벡터를 바로 사용할 수 있음.
 
-```{r}
+```{r index-38}
 x <- c(2,5,3,9,8,11,6)
 count <- 0
 for (val in x) {
@@ -669,7 +719,7 @@ print(count)
 
 실제로는 아래처럼 많이 사용함
 
-```{r}
+```{r index-39}
 x <- c(2,5,3,9,8,11,6)
 count <- 0
 for (val in 1:length(x)) {
@@ -683,7 +733,7 @@ print(count)
 ---
 ## 프로그래밍 흐름 처리 2 - for
 
-```{r}
+```{r index-40}
 library(ggplot2)
 library(dplyr)
 
@@ -695,7 +745,7 @@ iris %>%
 ---
 ## 프로그래밍 흐름 처리 2 - for
 
-```{r}
+```{r index-41}
 iris %>% 
   filter(Species == "setosa") %>% 
   ggplot(aes(x = Sepal.Length, y=Sepal.Width )) +
@@ -706,7 +756,7 @@ iris %>%
 
 ## 프로그래밍 흐름 처리 2 - for
 
-```{r echo = F}
+```{r index-42, echo = F}
 tar <- iris$Species %>% 
   as.character() %>% 
   unique()
@@ -714,7 +764,7 @@ tar <- iris$Species %>%
 
 rmd에 3장의 `r tar` 종 각각의 line chart를 그려주세요.
 
-```{r eval=F}
+```{r index-43, eval=F}
 ggplot(aes(x = Sepal.Length, y=Sepal.Width )) +
   geom_line()
 ```
@@ -724,7 +774,7 @@ ggplot(aes(x = Sepal.Length, y=Sepal.Width )) +
 
 방법 1 : 코드 복사+붙여넣기
 
-```{r eval=F}
+```{r index-44, eval=F}
 iris %>% 
   filter(Species == "setosa") %>% 
   ggplot(aes(x = Sepal.Length, y=Sepal.Width )) +
@@ -746,12 +796,12 @@ iris %>%
 
 방법 2 : 하드 코딩 제거
 
-```{r}
+```{r index-45}
 tar <- iris$Species %>% 
   as.character() %>% 
   unique()
 ```
-```{r eval=F}
+```{r index-46, eval=F}
 iris %>% 
   filter(Species == tar[1]) %>% 
   ggplot(aes(x = Sepal.Length, y=Sepal.Width )) +
@@ -773,7 +823,7 @@ iris %>%
 
 방법 3 : for 문 작성
 
-```{r eval=F}
+```{r index-47, eval=F}
 tar <- iris$Species %>% 
   as.character() %>% 
   unique()
@@ -794,7 +844,7 @@ iris %>%
 
 `iris` 데이터에서 `Species` 별로 데이터를 분리해서 개별 파일(총 3개의 파일)로 저장해주세요.
 
-```{r eval=F}
+```{r index-48, eval=F}
 tar <- iris$Species %>% 
   as.character() %>% 
   unique()
@@ -818,7 +868,7 @@ for (i in 1:length(tar)){
 
 `gt()`를 이용해 출력 이후 `%>%` 로 연결해서 출력물 설정을 추가
 
-```{r}
+```{r index-49}
 library(gt)
 iris %>% 
   head() %>% 
@@ -831,7 +881,7 @@ iris %>%
 
 [fontawesome][fontawesome] 패키지는 이모티콘을 사용할 수 있게 해줌
  
-```{r message=F, echo=F}
+```{r index-50, message=F, echo=F}
 library(stringr)
 iris %>% head(9) %>% gt::gt() %>% 
     text_transform(
@@ -859,7 +909,7 @@ iris %>% head(9) %>% gt::gt() %>%
 
 ## [fontawesome][fontawesome] 패키지 설치
 
-```{r eval=F}
+```{r index-51, eval=F}
 remotes::install_github("rstudio/fontawesome")
 ```
 
@@ -868,7 +918,7 @@ remotes::install_github("rstudio/fontawesome")
 [fontawesome 사이트][fontawesome 사이트] 에서 아이콘 이름을 찾는다.
 [css 색][css 색]으로 채울 색을 지정한다. HEX도 사용가능. 이름의 대소문자를 구분하지 않음.
 
-```{r}
+```{r index-52}
 library(fontawesome)
 fa("r-project", fill = "SteelBlue")
 fa("r-project", fill = "#4682B4")
@@ -885,7 +935,7 @@ fa("r-project", fill = "#4682B4")
 `return()` 함수는 생략할 수 있음
 
 .pull-left[
-```{r}
+```{r index-53}
 plus <- function(a, b){
   tem <- a + b
   return(tem)
@@ -894,7 +944,7 @@ plus(3, 5)
 ```
 ]
 .pull-right[
-```{r}
+```{r index-54}
 plus_min <- function(a, b){
   a + b
 }
@@ -906,7 +956,7 @@ plus_min(3, 5)
 
 ## 신호등 만들기
 
-```{r eval=F}
+```{r index-55, eval=F}
 library(stringr)
 library(gt)
 library(fontawesome)
