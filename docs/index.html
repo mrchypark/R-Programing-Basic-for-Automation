@@ -334,7 +334,7 @@ hdcm
 ##  8 2018-01-11 156000 156500 152500 155000 476891   155000 현대자동차
 ##  9 2018-01-12 153500 156000 153500 154000 424738   154000 현대자동차
 ## 10 2018-01-15 154000 155000 151000 155000 315592   155000 현대자동차
-## # ... with 234 more rows
+## # … with 234 more rows
 ```
 
 ---
@@ -360,7 +360,7 @@ hdcm
 ##  8 2018-01-11 현대자동차 open  156000
 ##  9 2018-01-12 현대자동차 open  153500
 ## 10 2018-01-15 현대자동차 open  154000
-## # ... with 1,454 more rows
+## # … with 1,454 more rows
 ```
 ---
 
@@ -491,16 +491,14 @@ hdcm %&gt;%
     day = day(date)
   ) %&gt;% 
   select(
-    comp, 
-    month, 
-    day, 
-    close
+    comp, month, 
+    day, close
   ) %&gt;% 
   group_by(month) %&gt;% 
   summarise(
     comp = "현대자동차",
     mclose = mean(close)
-    )-&gt;
+    ) -&gt;
   hdcm_md
 ```
 ]
@@ -536,11 +534,11 @@ hdcm %&gt;%
 ## # A tibble: 1 x 13
 ##   comp     `1`    `2`    `3`    `4`    `5`    `6`    `7`    `8`    `9`
 ##   &lt;chr&gt;  &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;
-## 1 현대자동~ 1.55e5 1.58e5 1.53e5 155500 148475 1.34e5 1.26e5 1.25e5 1.29e5
-## # ... with 3 more variables: `10` &lt;dbl&gt;, `11` &lt;dbl&gt;, `12` &lt;dbl&gt;
+## 1 현대자동… 1.55e5 1.58e5 1.53e5 155500 148475 1.34e5 1.26e5 1.25e5 1.29e5
+## # … with 3 more variables: `10` &lt;dbl&gt;, `11` &lt;dbl&gt;, `12` &lt;dbl&gt;
 ```
 
----
+--
 
 ## 연습문제의 예시 답
 
@@ -601,16 +599,16 @@ wifi
 ##    설치장소명 설치장소상세 설치시도명 설치시군구명 설치시설구분
 ##    &lt;chr&gt;      &lt;chr&gt;        &lt;chr&gt;      &lt;chr&gt;        &lt;chr&gt;       
 ##  1 청송군청   민원실       경상북도   청송군       관공서      
-##  2 청송군농업기술센터~ "\"1층, 2층, ~ 경상북도   청송군       관공서      
-##  3 청송읍사무소~ 민원실       경상북도   청송군       관공서      
-##  4 부동면사무소~ 민원실       경상북도   청송군       관공서      
-##  5 부남면사무소~ 민원실       경상북도   청송군       관공서      
-##  6 현동면사무소~ 민원실       경상북도   청송군       관공서      
-##  7 현서면사무소~ 민원실       경상북도   청송군       관공서      
-##  8 안덕면사무소~ 민원실       경상북도   청송군       관공서      
-##  9 파천면사무소~ 민원실       경상북도   청송군       관공서      
-## 10 진보면사무소~ 민원실       경상북도   청송군       관공서      
-## # ... with 21,463 more rows, and 12 more variables: 서비스제공사명 &lt;chr&gt;,
+##  2 청송군농업기술센터… "\"1층, 2층, … 경상북도   청송군       관공서      
+##  3 청송읍사무소… 민원실       경상북도   청송군       관공서      
+##  4 부동면사무소… 민원실       경상북도   청송군       관공서      
+##  5 부남면사무소… 민원실       경상북도   청송군       관공서      
+##  6 현동면사무소… 민원실       경상북도   청송군       관공서      
+##  7 현서면사무소… 민원실       경상북도   청송군       관공서      
+##  8 안덕면사무소… 민원실       경상북도   청송군       관공서      
+##  9 파천면사무소… 민원실       경상북도   청송군       관공서      
+## 10 진보면사무소… 민원실       경상북도   청송군       관공서      
+## # … with 21,463 more rows, and 12 more variables: 서비스제공사명 &lt;chr&gt;,
 ## #   와이파이SSID &lt;chr&gt;, 설치년월 &lt;chr&gt;, 소재지도로명주소 &lt;chr&gt;,
 ## #   소재지지번주소 &lt;chr&gt;, 관리기관명 &lt;chr&gt;, 관리기관전화번호 &lt;chr&gt;,
 ## #   위도 &lt;chr&gt;, 경도 &lt;chr&gt;, 데이터기준일자 &lt;chr&gt;, 제공기관코드 &lt;chr&gt;,
@@ -751,16 +749,16 @@ wifi %&gt;%
 ##    설치장소명 설치장소상세 설치시도명 설치시군구명 설치시설구분
 ##    &lt;chr&gt;      &lt;chr&gt;        &lt;chr&gt;      &lt;chr&gt;        &lt;chr&gt;       
 ##  1 청송군청   민원실       경상북도   청송군       관공서      
-##  2 청송군농업기술센터~ "\"1층, 2층, ~ 경상북도   청송군       관공서      
-##  3 청송읍사무소~ 민원실       경상북도   청송군       관공서      
-##  4 부동면사무소~ 민원실       경상북도   청송군       관공서      
-##  5 부남면사무소~ 민원실       경상북도   청송군       관공서      
-##  6 현동면사무소~ 민원실       경상북도   청송군       관공서      
-##  7 현서면사무소~ 민원실       경상북도   청송군       관공서      
-##  8 안덕면사무소~ 민원실       경상북도   청송군       관공서      
-##  9 파천면사무소~ 민원실       경상북도   청송군       관공서      
-## 10 진보면사무소~ 민원실       경상북도   청송군       관공서      
-## # ... with 3,856 more rows, and 12 more variables: 서비스제공사명 &lt;chr&gt;,
+##  2 청송군농업기술센터… "\"1층, 2층, … 경상북도   청송군       관공서      
+##  3 청송읍사무소… 민원실       경상북도   청송군       관공서      
+##  4 부동면사무소… 민원실       경상북도   청송군       관공서      
+##  5 부남면사무소… 민원실       경상북도   청송군       관공서      
+##  6 현동면사무소… 민원실       경상북도   청송군       관공서      
+##  7 현서면사무소… 민원실       경상북도   청송군       관공서      
+##  8 안덕면사무소… 민원실       경상북도   청송군       관공서      
+##  9 파천면사무소… 민원실       경상북도   청송군       관공서      
+## 10 진보면사무소… 민원실       경상북도   청송군       관공서      
+## # … with 3,856 more rows, and 12 more variables: 서비스제공사명 &lt;chr&gt;,
 ## #   와이파이SSID &lt;chr&gt;, 설치년월 &lt;chr&gt;, 소재지도로명주소 &lt;chr&gt;,
 ## #   소재지지번주소 &lt;chr&gt;, 관리기관명 &lt;chr&gt;, 관리기관전화번호 &lt;chr&gt;,
 ## #   위도 &lt;chr&gt;, 경도 &lt;chr&gt;, 데이터기준일자 &lt;chr&gt;, 제공기관코드 &lt;chr&gt;,
@@ -792,7 +790,7 @@ wifi %&gt;%
 ##  8 민원실 및 휴게실 내  
 ##  9 민원방문실           
 ## 10 민원청사 2층         
-## # ... with 64 more rows
+## # … with 64 more rows
 ```
 
 ---
@@ -820,7 +818,7 @@ wifi %&gt;%
 ##  8 민원실내                                      9
 ##  9 민원 대기실                                   4
 ## 10 민원실 천장                                   4
-## # ... with 64 more rows
+## # … with 64 more rows
 ```
 
 ---
@@ -859,11 +857,239 @@ install.packages("lubridate")
 
 ---
 
-## 글자를 날짜시간 자료형으로
+## 날짜, 날짜시간, 시간 자료형
+
+날짜 자료형 `date`, 날짜시간 자료형 `POSIXct`(`dttm`), 시간 자료형 `hms` 로 표시
+
+.pull-left[
+
+```r
+Sys.Date()
+```
+
+```
+## [1] "2019-07-08"
+```
+
+```r
+class(Sys.Date())
+```
+
+```
+## [1] "Date"
+```
+
+```r
+Sys.time()
+```
+
+```
+## [1] "2019-07-08 13:29:06 KST"
+```
+
+```r
+class(Sys.time())
+```
+
+```
+## [1] "POSIXct" "POSIXt"
+```
+]
+.pull-right[
+
+```r
+library(hms)
+as.hms(150)
+```
+
+```
+## 00:02:30
+```
+
+```r
+class(as.hms(150))
+```
+
+```
+## [1] "hms"      "difftime"
+```
+]
 
 ---
 
-## 날짜시간 자료형에서 필요한 데이터 얻기
+## 날짜 시간 등 자료형의 작업순서
+
+아래에서는 날짜, 날짜시간, 시간 자료형 전체를 날짜시간 자료형으로 작성함
+
+1. 데이터 불러오기
+1. 날짜시간 자료형에 해당하는 컬럼 확인
+1. 해당 날짜시간 자료형으로 처리 되어 있는지 확인
+1. 글자 혹은 숫자로 되어 있는 컬럼을 날짜시간 자료형으로 변환
+1. 날짜시간 자료형으로 필요한 정보 추출 및 가공
+
+---
+## 글자, 숫자를 날짜시간 자료형으로
+
+y 연 m 월 d 일 h 시 m 분 s 초 를 뜻함. 순서와 정보 유무에 민감함.
+
+
+```r
+library("lubridate")
+
+x &lt;- c(20100101120101,  "2009-01-02 12-01-02", 
+       "2009.01.03 12:01:03", "2009-1-4 12-1-4",
+       "2009-1, 5 12:1, 5",
+       "200901-08 1201-08",
+       "2009 arbitrary 1 non-decimal 6 chars 12 in between 1 !!! 6",
+       "OR collapsed formats: 20090107 120107 (as long as prefixed with zeros)",
+       "Automatic wday, Thu, detection, 10-01-10 10:01:10 and p format: AM",
+       "Created on 10-01-11 at 10:01:11 PM")
+ymd_hms(x)
+```
+
+```
+##  [1] "2010-01-01 12:01:01 UTC" "2009-01-02 12:01:02 UTC"
+##  [3] "2009-01-03 12:01:03 UTC" "2009-01-04 12:01:04 UTC"
+##  [5] "2009-01-05 12:01:05 UTC" "2009-01-08 12:01:08 UTC"
+##  [7] "2009-01-06 12:01:06 UTC" "2009-01-07 12:01:07 UTC"
+##  [9] "2010-01-10 10:01:10 UTC" "2010-01-11 22:01:11 UTC"
+```
+
+---
+
+## 한글에서도 잘 동작함.
+
+
+```r
+ymd_hm("2017년 1월 4일 14시 30분")
+```
+
+```
+## [1] "2017-01-04 14:30:00 UTC"
+```
+
+### 주요 함수들
+
+y 년 m 월 d 일 h 시 m 분 s 초
+
+
+```r
+ymd_hms(), ymd_hm(), ymd_h()
+ydm_hms(), ydm_hm(), ydm_h()
+dmy_hms(), dmy_hm(), dmy_h()
+mdy_hms(), mdy_hm(), mdy_h()
+
+ymd(), ydm(), mdy()
+myd(), dmy(), dym(), yq()
+
+hms(), hm(), ms()
+```
+
+---
+
+## 실습 데이터
+
+
+```r
+# remotes::install_github("mrchypark/krwifi")
+library(krwifi)
+wifi 
+```
+
+```
+## # A tibble: 21,473 x 17
+##    설치장소명 설치장소상세 설치시도명 설치시군구명 설치시설구분
+##    &lt;chr&gt;      &lt;chr&gt;        &lt;chr&gt;      &lt;chr&gt;        &lt;chr&gt;       
+##  1 청송군청   민원실       경상북도   청송군       관공서      
+##  2 청송군농업기술센터… "\"1층, 2층, … 경상북도   청송군       관공서      
+##  3 청송읍사무소… 민원실       경상북도   청송군       관공서      
+##  4 부동면사무소… 민원실       경상북도   청송군       관공서      
+##  5 부남면사무소… 민원실       경상북도   청송군       관공서      
+##  6 현동면사무소… 민원실       경상북도   청송군       관공서      
+##  7 현서면사무소… 민원실       경상북도   청송군       관공서      
+##  8 안덕면사무소… 민원실       경상북도   청송군       관공서      
+##  9 파천면사무소… 민원실       경상북도   청송군       관공서      
+## 10 진보면사무소… 민원실       경상북도   청송군       관공서      
+## # … with 21,463 more rows, and 12 more variables: 서비스제공사명 &lt;chr&gt;,
+## #   와이파이SSID &lt;chr&gt;, 설치년월 &lt;chr&gt;, 소재지도로명주소 &lt;chr&gt;,
+## #   소재지지번주소 &lt;chr&gt;, 관리기관명 &lt;chr&gt;, 관리기관전화번호 &lt;chr&gt;,
+## #   위도 &lt;chr&gt;, 경도 &lt;chr&gt;, 데이터기준일자 &lt;chr&gt;, 제공기관코드 &lt;chr&gt;,
+## #   제공기관명 &lt;chr&gt;
+```
+
+---
+
+## 날짜시간 자료형으로 변환 실습
+
+
+```r
+wifi %&gt;% 
+  select(설치년월, 데이터기준일자) -&gt; 
+  lub_exam
+lub_exam
+```
+
+```
+## # A tibble: 21,473 x 2
+##    설치년월 데이터기준일자
+##    &lt;chr&gt;    &lt;chr&gt;         
+##  1 2014-12  2018-08-01    
+##  2 2015-10  2018-08-01    
+##  3 2014-12  2018-08-01    
+##  4 2013-09  2018-08-01    
+##  5 2015-10  2018-08-01    
+##  6 2015-10  2018-08-01    
+##  7 2015-10  2018-08-01    
+##  8 2015-10  2018-08-01    
+##  9 2015-10  2018-08-01    
+## 10 2014-12  2018-08-01    
+## # … with 21,463 more rows
+```
+
+---
+
+## 날짜시간 자료형으로 변환 실습
+
+
+```r
+lub_exam %&gt;% 
+  distinct(데이터기준일자) %&gt;% 
+  mutate(ymd_try = ymd(데이터기준일자))
+```
+
+```
+## # A tibble: 124 x 2
+##    데이터기준일자 ymd_try   
+##    &lt;chr&gt;          &lt;date&gt;    
+##  1 2018-08-01     2018-08-01
+##  2 2018-02-23     2018-02-23
+##  3 2018-08-13     2018-08-13
+##  4 2018-08-08     2018-08-08
+##  5 2018-08-06     2018-08-06
+##  6 2018-08-09     2018-08-09
+##  7 2018-08-10     2018-08-10
+##  8 2018-07-31     2018-07-31
+##  9 2018-08-07     2018-08-07
+## 10 2018-02-01     2018-02-01
+## # … with 114 more rows
+```
+
+---
+
+## 날짜시간 자료형으로 변환 실습
+
+
+```r
+lub_exam %&gt;% 
+  distinct(데이터기준일자) %&gt;% 
+  mutate(ymd_try = ymd(데이터기준일자)) %&gt;% 
+  filter(is.na(ymd_try))
+```
+
+```
+## # A tibble: 0 x 2
+## # … with 2 variables: 데이터기준일자 &lt;chr&gt;, ymd_try &lt;date&gt;
+```
 
 ---
 
@@ -875,6 +1101,115 @@ install.packages("hms")
 ```
 
 ![](https://user-images.githubusercontent.com/6179259/60306118-fb6fa000-9979-11e9-8591-76e242e9288f.png)
+
+---
+
+## 날짜시간 자료형에서 데이터 얻기
+
+날짜시간 자료형에서 년, 월, 일 같은 필요한 데이터를 뽑아주는 함수들
+
+
+```r
+year() month() day() quarter()
+week() mday() wday() qday() yday()
+hour() minute() second()
+```
+
+---
+
+## 날짜시간 자료형에서 데이터 얻기
+
+
+```r
+sam_dttm &lt;- ymd_hms("2018-02-11 12:33:34")
+sam_dttm
+```
+
+```
+## [1] "2018-02-11 12:33:34 UTC"
+```
+
+```r
+year(sam_dttm)
+```
+
+```
+## [1] 2018
+```
+
+```r
+month(sam_dttm)
+```
+
+```
+## [1] 2
+```
+
+```r
+day(sam_dttm)
+```
+
+```
+## [1] 11
+```
+
+```r
+week(sam_dttm)
+```
+
+```
+## [1] 6
+```
+
+```r
+## 달 중 몇번째 날인지
+mday(sam_dttm)
+```
+
+```
+## [1] 11
+```
+
+```r
+## 주 중 몇번째 날인지
+wday(sam_dttm)
+```
+
+```
+## [1] 1
+```
+
+---
+
+## 날짜시간 자료형에서 데이터 얻기
+
+
+```r
+## 년 내 몇번째 주인지
+week(sam_dttm)
+```
+
+```
+## [1] 6
+```
+
+```r
+## 달 중 몇번째 날인지
+mday(sam_dttm)
+```
+
+```
+## [1] 11
+```
+
+```r
+## 주 중 몇번째 날인지
+wday(sam_dttm)
+```
+
+```
+## [1] 1
+```
 
 
 ---
@@ -978,8 +1313,8 @@ for (val in sequence) {
 x &lt;- c(2,5,3,9,8,11,6)
 count &lt;- 0
 for (val in x) {
-  if(val %% 2 == 0) {
-    count = count+1
+  if (val %% 2 == 0) {
+    count = count + 1
   }
 }
 print(count)
@@ -999,8 +1334,8 @@ print(count)
 x &lt;- c(2,5,3,9,8,11,6)
 count &lt;- 0
 for (val in 1:length(x)) {
-  if(x[val] %% 2 == 0) {
-    count = count+1
+  if (x[val] %% 2 == 0) {
+    count = count + 1
   }
 }
 print(count)
@@ -1019,7 +1354,7 @@ library(ggplot2)
 library(dplyr)
 
 iris %&gt;% 
-  ggplot(aes(x = Sepal.Length, y=Sepal.Width )) +
+  ggplot(aes(x = Sepal.Length, y = Sepal.Width )) +
   geom_line()
 ```
 
@@ -1032,7 +1367,7 @@ iris %&gt;%
 ```r
 iris %&gt;% 
   filter(Species == "setosa") %&gt;% 
-  ggplot(aes(x = Sepal.Length, y=Sepal.Width )) +
+  ggplot(aes(x = Sepal.Length, y = Sepal.Width )) +
   geom_line()
 ```
 
@@ -1048,7 +1383,7 @@ rmd에 3장의 setosa, versicolor, virginica 종 각각의 line chart를 그려�
 
 
 ```r
-ggplot(aes(x = Sepal.Length, y=Sepal.Width )) +
+ggplot(aes(x = Sepal.Length, y = Sepal.Width )) +
   geom_line()
 ```
 
@@ -1061,17 +1396,17 @@ ggplot(aes(x = Sepal.Length, y=Sepal.Width )) +
 ```r
 iris %&gt;% 
   filter(Species == "setosa") %&gt;% 
-  ggplot(aes(x = Sepal.Length, y=Sepal.Width )) +
+  ggplot(aes(x = Sepal.Length, y = Sepal.Width )) +
   geom_line()
 
 iris %&gt;% 
   filter(Species == "versicolor") %&gt;% 
-  ggplot(aes(x = Sepal.Length, y=Sepal.Width )) +
+  ggplot(aes(x = Sepal.Length, y = Sepal.Width )) +
   geom_line()
 
 iris %&gt;% 
   filter(Species == "virginica") %&gt;% 
-  ggplot(aes(x = Sepal.Length, y=Sepal.Width )) +
+  ggplot(aes(x = Sepal.Length, y = Sepal.Width )) +
   geom_line()
 ```
 
@@ -1090,17 +1425,17 @@ tar &lt;- iris$Species %&gt;%
 ```r
 iris %&gt;% 
   filter(Species == tar[1]) %&gt;% 
-  ggplot(aes(x = Sepal.Length, y=Sepal.Width )) +
+  ggplot(aes(x = Sepal.Length, y = Sepal.Width )) +
   geom_line()
 
 iris %&gt;% 
   filter(Species == tar[2]) %&gt;% 
-  ggplot(aes(x = Sepal.Length, y=Sepal.Width )) +
+  ggplot(aes(x = Sepal.Length, y = Sepal.Width )) +
   geom_line()
 
 iris %&gt;% 
   filter(Species == tar[3]) %&gt;% 
-  ggplot(aes(x = Sepal.Length, y=Sepal.Width )) +
+  ggplot(aes(x = Sepal.Length, y = Sepal.Width )) +
   geom_line()
 ```
 
@@ -1118,7 +1453,7 @@ tar &lt;- iris$Species %&gt;%
 for (i in 1:length(tar)){
 iris %&gt;% 
   filter(Species == tar[i]) %&gt;% 
-  ggplot(aes(x = Sepal.Length, y=Sepal.Width )) +
+  ggplot(aes(x = Sepal.Length, y = Sepal.Width )) +
   geom_line() -&gt; tem
   print(tem)
 }
@@ -1168,7 +1503,7 @@ iris %&gt;%
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
 }
 
-#lkmfzgbqfx .gt_table {
+#ypnohfehot .gt_table {
   display: table;
   border-collapse: collapse;
   margin-left: auto;
@@ -1187,13 +1522,13 @@ iris %&gt;%
   /* table.border.top.color */
 }
 
-#lkmfzgbqfx .gt_heading {
+#ypnohfehot .gt_heading {
   background-color: #FFFFFF;
   /* heading.background.color */
   border-bottom-color: #FFFFFF;
 }
 
-#lkmfzgbqfx .gt_title {
+#ypnohfehot .gt_title {
   color: #000000;
   font-size: 125%;
   /* heading.title.font.size */
@@ -1204,7 +1539,7 @@ iris %&gt;%
   border-bottom-width: 0;
 }
 
-#lkmfzgbqfx .gt_subtitle {
+#ypnohfehot .gt_subtitle {
   color: #000000;
   font-size: 85%;
   /* heading.subtitle.font.size */
@@ -1215,7 +1550,7 @@ iris %&gt;%
   border-top-width: 0;
 }
 
-#lkmfzgbqfx .gt_bottom_border {
+#ypnohfehot .gt_bottom_border {
   border-bottom-style: solid;
   /* heading.border.bottom.style */
   border-bottom-width: 2px;
@@ -1224,7 +1559,7 @@ iris %&gt;%
   /* heading.border.bottom.color */
 }
 
-#lkmfzgbqfx .gt_column_spanner {
+#ypnohfehot .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #A8A8A8;
@@ -1232,7 +1567,7 @@ iris %&gt;%
   padding-bottom: 4px;
 }
 
-#lkmfzgbqfx .gt_col_heading {
+#ypnohfehot .gt_col_heading {
   color: #000000;
   background-color: #FFFFFF;
   /* column_labels.background.color */
@@ -1245,11 +1580,11 @@ iris %&gt;%
   margin: 10px;
 }
 
-#lkmfzgbqfx .gt_sep_right {
+#ypnohfehot .gt_sep_right {
   border-right: 5px solid #FFFFFF;
 }
 
-#lkmfzgbqfx .gt_group_heading {
+#ypnohfehot .gt_group_heading {
   padding: 8px;
   color: #000000;
   background-color: #FFFFFF;
@@ -1273,7 +1608,7 @@ iris %&gt;%
   vertical-align: middle;
 }
 
-#lkmfzgbqfx .gt_empty_group_heading {
+#ypnohfehot .gt_empty_group_heading {
   padding: 0.5px;
   color: #000000;
   background-color: #FFFFFF;
@@ -1297,33 +1632,33 @@ iris %&gt;%
   vertical-align: middle;
 }
 
-#lkmfzgbqfx .gt_striped {
+#ypnohfehot .gt_striped {
   background-color: #f2f2f2;
 }
 
-#lkmfzgbqfx .gt_from_md > :first-child {
+#ypnohfehot .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#lkmfzgbqfx .gt_from_md > :last-child {
+#ypnohfehot .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#lkmfzgbqfx .gt_row {
+#ypnohfehot .gt_row {
   padding: 8px;
   /* row.padding */
   margin: 10px;
   vertical-align: middle;
 }
 
-#lkmfzgbqfx .gt_stub {
+#ypnohfehot .gt_stub {
   border-right-style: solid;
   border-right-width: 2px;
   border-right-color: #A8A8A8;
   padding-left: 12px;
 }
 
-#lkmfzgbqfx .gt_summary_row {
+#ypnohfehot .gt_summary_row {
   color: #000000;
   background-color: #FFFFFF;
   /* summary_row.background.color */
@@ -1333,7 +1668,7 @@ iris %&gt;%
   /* summary_row.text_transform */
 }
 
-#lkmfzgbqfx .gt_grand_summary_row {
+#ypnohfehot .gt_grand_summary_row {
   color: #000000;
   background-color: #FFFFFF;
   /* grand_summary_row.background.color */
@@ -1343,19 +1678,19 @@ iris %&gt;%
   /* grand_summary_row.text_transform */
 }
 
-#lkmfzgbqfx .gt_first_summary_row {
+#ypnohfehot .gt_first_summary_row {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #A8A8A8;
 }
 
-#lkmfzgbqfx .gt_first_grand_summary_row {
+#ypnohfehot .gt_first_grand_summary_row {
   border-top-style: double;
   border-top-width: 6px;
   border-top-color: #A8A8A8;
 }
 
-#lkmfzgbqfx .gt_table_body {
+#ypnohfehot .gt_table_body {
   border-top-style: solid;
   /* table_body.border.top.style */
   border-top-width: 2px;
@@ -1370,55 +1705,55 @@ iris %&gt;%
   /* table_body.border.bottom.color */
 }
 
-#lkmfzgbqfx .gt_footnote {
+#ypnohfehot .gt_footnote {
   font-size: 90%;
   /* footnote.font.size */
   padding: 4px;
   /* footnote.padding */
 }
 
-#lkmfzgbqfx .gt_sourcenote {
+#ypnohfehot .gt_sourcenote {
   font-size: 90%;
   /* sourcenote.font.size */
   padding: 4px;
   /* sourcenote.padding */
 }
 
-#lkmfzgbqfx .gt_center {
+#ypnohfehot .gt_center {
   text-align: center;
 }
 
-#lkmfzgbqfx .gt_left {
+#ypnohfehot .gt_left {
   text-align: left;
 }
 
-#lkmfzgbqfx .gt_right {
+#ypnohfehot .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#lkmfzgbqfx .gt_font_normal {
+#ypnohfehot .gt_font_normal {
   font-weight: normal;
 }
 
-#lkmfzgbqfx .gt_font_bold {
+#ypnohfehot .gt_font_bold {
   font-weight: bold;
 }
 
-#lkmfzgbqfx .gt_font_italic {
+#ypnohfehot .gt_font_italic {
   font-style: italic;
 }
 
-#lkmfzgbqfx .gt_super {
+#ypnohfehot .gt_super {
   font-size: 65%;
 }
 
-#lkmfzgbqfx .gt_footnote_glyph {
+#ypnohfehot .gt_footnote_glyph {
   font-style: italic;
   font-size: 65%;
 }
 </style>
-<div id="lkmfzgbqfx" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;"><!--gt table start-->
+<div id="ypnohfehot" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;"><!--gt table start-->
 <table class='gt_table'>
 <tr>
 <th class='gt_col_heading gt_right' rowspan='1' colspan='1'>Sepal.Length</th>
@@ -1485,7 +1820,7 @@ iris %&gt;%
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
 }
 
-#qzvflapimc .gt_table {
+#luzxjvnaot .gt_table {
   display: table;
   border-collapse: collapse;
   margin-left: auto;
@@ -1504,13 +1839,13 @@ iris %&gt;%
   /* table.border.top.color */
 }
 
-#qzvflapimc .gt_heading {
+#luzxjvnaot .gt_heading {
   background-color: #FFFFFF;
   /* heading.background.color */
   border-bottom-color: #FFFFFF;
 }
 
-#qzvflapimc .gt_title {
+#luzxjvnaot .gt_title {
   color: #000000;
   font-size: 125%;
   /* heading.title.font.size */
@@ -1521,7 +1856,7 @@ iris %&gt;%
   border-bottom-width: 0;
 }
 
-#qzvflapimc .gt_subtitle {
+#luzxjvnaot .gt_subtitle {
   color: #000000;
   font-size: 85%;
   /* heading.subtitle.font.size */
@@ -1532,7 +1867,7 @@ iris %&gt;%
   border-top-width: 0;
 }
 
-#qzvflapimc .gt_bottom_border {
+#luzxjvnaot .gt_bottom_border {
   border-bottom-style: solid;
   /* heading.border.bottom.style */
   border-bottom-width: 2px;
@@ -1541,7 +1876,7 @@ iris %&gt;%
   /* heading.border.bottom.color */
 }
 
-#qzvflapimc .gt_column_spanner {
+#luzxjvnaot .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #A8A8A8;
@@ -1549,7 +1884,7 @@ iris %&gt;%
   padding-bottom: 4px;
 }
 
-#qzvflapimc .gt_col_heading {
+#luzxjvnaot .gt_col_heading {
   color: #000000;
   background-color: #FFFFFF;
   /* column_labels.background.color */
@@ -1562,11 +1897,11 @@ iris %&gt;%
   margin: 10px;
 }
 
-#qzvflapimc .gt_sep_right {
+#luzxjvnaot .gt_sep_right {
   border-right: 5px solid #FFFFFF;
 }
 
-#qzvflapimc .gt_group_heading {
+#luzxjvnaot .gt_group_heading {
   padding: 8px;
   color: #000000;
   background-color: #FFFFFF;
@@ -1590,7 +1925,7 @@ iris %&gt;%
   vertical-align: middle;
 }
 
-#qzvflapimc .gt_empty_group_heading {
+#luzxjvnaot .gt_empty_group_heading {
   padding: 0.5px;
   color: #000000;
   background-color: #FFFFFF;
@@ -1614,33 +1949,33 @@ iris %&gt;%
   vertical-align: middle;
 }
 
-#qzvflapimc .gt_striped {
+#luzxjvnaot .gt_striped {
   background-color: #f2f2f2;
 }
 
-#qzvflapimc .gt_from_md > :first-child {
+#luzxjvnaot .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#qzvflapimc .gt_from_md > :last-child {
+#luzxjvnaot .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#qzvflapimc .gt_row {
+#luzxjvnaot .gt_row {
   padding: 8px;
   /* row.padding */
   margin: 10px;
   vertical-align: middle;
 }
 
-#qzvflapimc .gt_stub {
+#luzxjvnaot .gt_stub {
   border-right-style: solid;
   border-right-width: 2px;
   border-right-color: #A8A8A8;
   padding-left: 12px;
 }
 
-#qzvflapimc .gt_summary_row {
+#luzxjvnaot .gt_summary_row {
   color: #000000;
   background-color: #FFFFFF;
   /* summary_row.background.color */
@@ -1650,7 +1985,7 @@ iris %&gt;%
   /* summary_row.text_transform */
 }
 
-#qzvflapimc .gt_grand_summary_row {
+#luzxjvnaot .gt_grand_summary_row {
   color: #000000;
   background-color: #FFFFFF;
   /* grand_summary_row.background.color */
@@ -1660,19 +1995,19 @@ iris %&gt;%
   /* grand_summary_row.text_transform */
 }
 
-#qzvflapimc .gt_first_summary_row {
+#luzxjvnaot .gt_first_summary_row {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #A8A8A8;
 }
 
-#qzvflapimc .gt_first_grand_summary_row {
+#luzxjvnaot .gt_first_grand_summary_row {
   border-top-style: double;
   border-top-width: 6px;
   border-top-color: #A8A8A8;
 }
 
-#qzvflapimc .gt_table_body {
+#luzxjvnaot .gt_table_body {
   border-top-style: solid;
   /* table_body.border.top.style */
   border-top-width: 2px;
@@ -1687,55 +2022,55 @@ iris %&gt;%
   /* table_body.border.bottom.color */
 }
 
-#qzvflapimc .gt_footnote {
+#luzxjvnaot .gt_footnote {
   font-size: 90%;
   /* footnote.font.size */
   padding: 4px;
   /* footnote.padding */
 }
 
-#qzvflapimc .gt_sourcenote {
+#luzxjvnaot .gt_sourcenote {
   font-size: 90%;
   /* sourcenote.font.size */
   padding: 4px;
   /* sourcenote.padding */
 }
 
-#qzvflapimc .gt_center {
+#luzxjvnaot .gt_center {
   text-align: center;
 }
 
-#qzvflapimc .gt_left {
+#luzxjvnaot .gt_left {
   text-align: left;
 }
 
-#qzvflapimc .gt_right {
+#luzxjvnaot .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#qzvflapimc .gt_font_normal {
+#luzxjvnaot .gt_font_normal {
   font-weight: normal;
 }
 
-#qzvflapimc .gt_font_bold {
+#luzxjvnaot .gt_font_bold {
   font-weight: bold;
 }
 
-#qzvflapimc .gt_font_italic {
+#luzxjvnaot .gt_font_italic {
   font-style: italic;
 }
 
-#qzvflapimc .gt_super {
+#luzxjvnaot .gt_super {
   font-size: 65%;
 }
 
-#qzvflapimc .gt_footnote_glyph {
+#luzxjvnaot .gt_footnote_glyph {
   font-style: italic;
   font-size: 65%;
 }
 </style>
-<div id="qzvflapimc" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;"><!--gt table start-->
+<div id="luzxjvnaot" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;"><!--gt table start-->
 <table class='gt_table'>
 <tr>
 <th class='gt_col_heading gt_right' rowspan='1' colspan='1'>Sepal.Length</th>
