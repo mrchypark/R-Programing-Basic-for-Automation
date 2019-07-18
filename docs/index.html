@@ -44,7 +44,7 @@ class: center, middle, title-slide
 
 ### 박찬엽
 
-### .small[2019년 6월 28일].tiny[update 2019년 7월 19일]
+### .small[2019년 6월 28일] .tiny[update 2019년 7월 19일]
 
 ---
 
@@ -73,8 +73,7 @@ install.packages("remotes")
 library(remotes)
 
 ## 패키지 설치 방법 2
-install_github("https://github.com/rstudio/fontawesome")
-install_github("https://github.com/rstudio/gt")
+install_github("https://github.com/sfirke/janitor")
 ```
 
 ---
@@ -97,6 +96,15 @@ install_github("https://github.com/sfirke/janitor")
 ```
 
 ![](https://user-images.githubusercontent.com/6179259/60295635-24366c00-995f-11e9-9211-22c69ba240a3.png)
+
+---
+
+## 패키지 설치 방법 2 [remotes][remotes]
+
+같이 사용하는 패키지들을 검사해서 업데이트 할지를 질문함.    
+1을 선택하고, 문제가 생기면 3 `None`을 선택
+
+![](https://user-images.githubusercontent.com/6179259/61492514-6d249200-a9ec-11e9-9d8d-775dfca627c7.png)
 
 ---
 
@@ -277,7 +285,42 @@ juniors_untidy %&gt;%
 ---
 ## wide to long
 
-![](https://github.com/apreshill/teachthat/blob/master/gather/gather.gif?raw=true)
+![](https://github.com/apreshill/teachthat/blob/master/gather/gather-gif/gather-01.png?raw=true)
+
+---
+## wide to long
+
+![](https://github.com/apreshill/teachthat/blob/master/gather/gather-gif/gather-02.png?raw=true)
+
+---
+## wide to long
+
+![](https://github.com/apreshill/teachthat/blob/master/gather/gather-gif/gather-03.png?raw=true)
+
+---
+## wide to long
+
+![](https://github.com/apreshill/teachthat/blob/master/gather/gather-gif/gather-04.png?raw=true)
+
+---
+## wide to long
+
+![](https://github.com/apreshill/teachthat/blob/master/gather/gather-gif/gather-05.png?raw=true)
+
+---
+## wide to long
+
+![](https://github.com/apreshill/teachthat/blob/master/gather/gather-gif/gather-06.png?raw=true)
+
+---
+## wide to long
+
+![](https://github.com/apreshill/teachthat/blob/master/gather/gather-gif/gather-07.png?raw=true)
+
+---
+## wide to long
+
+![](https://github.com/apreshill/teachthat/blob/master/gather/gather-gif/gather-08.png?raw=true)
 
 ---
 
@@ -366,7 +409,8 @@ hdcm
 
 ## 연습문제 
 
-- "volume"은 다른 컬럼들과 의미가 다릅니다. 다른 컬럼들은 모두 가격을 뜻하는 반면, "volume"은 거래량을 뜻합니다. `hdcm` 데이터를 `gather()` 함수를 이용해서 long form으로 바꾸는데, `volume`은 제외해 주세요.
+- `volume`은 다른 컬럼들과 의미가 다릅니다. 다른 컬럼들은 모두 가격을 뜻하는 반면, `volume`은 거래량을 뜻합니다.    
+`hdcm` 데이터를 `gather()` 함수를 이용해서 long form으로 바꾸는데, `volume`은 제외해 주세요.
 
 ---
 
@@ -475,7 +519,38 @@ juniors_about %&gt;%
 ---
 ## long to wide
 
-![](https://github.com/apreshill/teachthat/blob/master/spread/spread.gif?raw=true)
+![](https://github.com/apreshill/teachthat/blob/master/spread/spread-gif/Slide3.png?raw=true)
+
+---
+## long to wide
+
+![](https://github.com/apreshill/teachthat/blob/master/spread/spread-gif/Slide4.png?raw=true)
+
+---
+## long to wide
+
+![](https://github.com/apreshill/teachthat/blob/master/spread/spread-gif/Slide5.png?raw=true)
+
+---
+## long to wide
+
+![](https://github.com/apreshill/teachthat/blob/master/spread/spread-gif/Slide6.png?raw=true)
+
+---
+## long to wide
+
+![](https://github.com/apreshill/teachthat/blob/master/spread/spread-gif/Slide7.png?raw=true)
+
+---
+## long to wide
+
+![](https://github.com/apreshill/teachthat/blob/master/spread/spread-gif/Slide8.png?raw=true)
+
+---
+## long to wide
+
+![](https://github.com/apreshill/teachthat/blob/master/spread/spread-gif/Slide9.png?raw=true)
+
 
 ---
 
@@ -488,14 +563,13 @@ juniors_about %&gt;%
 library(lubridate)
 hdcm %&gt;% 
   mutate(
-    month = month(date),
-    day = day(date)
+    year_month = 
+      floor_date(date, "month")
   ) %&gt;% 
   select(
-    comp, month, 
-    day, close
+    comp, year_month, close
   ) %&gt;% 
-  group_by(month) %&gt;% 
+  group_by(year_month) %&gt;% 
   summarise(
     comp = "현대자동차",
     mclose = mean(close)
@@ -507,20 +581,20 @@ hdcm %&gt;%
 
 ```
 ## # A tibble: 12 x 3
-##    month comp        mclose
-##    &lt;dbl&gt; &lt;chr&gt;        &lt;dbl&gt;
-##  1     1 현대자동차 155205.
-##  2     2 현대자동차 157889.
-##  3     3 현대자동차 152833.
-##  4     4 현대자동차 155500 
-##  5     5 현대자동차 148475 
-##  6     6 현대자동차 134079.
-##  7     7 현대자동차 125523.
-##  8     8 현대자동차 125273.
-##  9     9 현대자동차 129118.
-## 10    10 현대자동차 116643.
-## 11    11 현대자동차 102155.
-## 12    12 현대자동차 115895.
+##    year_month comp        mclose
+##    &lt;date&gt;     &lt;chr&gt;        &lt;dbl&gt;
+##  1 2018-01-01 현대자동차 155205.
+##  2 2018-02-01 현대자동차 157889.
+##  3 2018-03-01 현대자동차 152833.
+##  4 2018-04-01 현대자동차 155500 
+##  5 2018-05-01 현대자동차 148475 
+##  6 2018-06-01 현대자동차 134079.
+##  7 2018-07-01 현대자동차 125523.
+##  8 2018-08-01 현대자동차 125273.
+##  9 2018-09-01 현대자동차 129118.
+## 10 2018-10-01 현대자동차 116643.
+## 11 2018-11-01 현대자동차 102155.
+## 12 2018-12-01 현대자동차 115895.
 ```
 ]
 
@@ -533,10 +607,12 @@ hdcm %&gt;%
 
 ```
 ## # A tibble: 1 x 13
-##   comp     `1`    `2`    `3`    `4`    `5`    `6`    `7`    `8`    `9`
-##   &lt;chr&gt;  &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;
-## 1 현대자동… 1.55e5 1.58e5 1.53e5 155500 148475 1.34e5 1.26e5 1.25e5 1.29e5
-## # … with 3 more variables: `10` &lt;dbl&gt;, `11` &lt;dbl&gt;, `12` &lt;dbl&gt;
+##   comp  `2018-01-01` `2018-02-01` `2018-03-01` `2018-04-01` `2018-05-01`
+##   &lt;chr&gt;        &lt;dbl&gt;        &lt;dbl&gt;        &lt;dbl&gt;        &lt;dbl&gt;        &lt;dbl&gt;
+## 1 현대자동…      155205.      157889.      152833.       155500       148475
+## # … with 7 more variables: `2018-06-01` &lt;dbl&gt;, `2018-07-01` &lt;dbl&gt;,
+## #   `2018-08-01` &lt;dbl&gt;, `2018-09-01` &lt;dbl&gt;, `2018-10-01` &lt;dbl&gt;,
+## #   `2018-11-01` &lt;dbl&gt;, `2018-12-01` &lt;dbl&gt;
 ```
 
 --
@@ -546,7 +622,7 @@ hdcm %&gt;%
 
 ```r
 hdcm_md %&gt;% 
-  spread(month, mclose)
+  spread(year_month, mclose)
 ```
 ---
 
@@ -885,7 +961,7 @@ Sys.time()
 ```
 
 ```
-## [1] "2019-07-19 06:07:10 KST"
+## [1] "2019-07-19 06:44:45 KST"
 ```
 
 ```r

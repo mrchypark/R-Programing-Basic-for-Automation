@@ -35,7 +35,7 @@ class: center, middle, title-slide
 
 ### 박찬엽
 
-### .small[2019년 6월 28일].tiny[update 2019년 7월 19일]
+### .small[2019년 6월 28일] .tiny[update 2019년 7월 19일]
 
 ---
 
@@ -63,8 +63,7 @@ install.packages("remotes")
 library(remotes)
 
 ## 패키지 설치 방법 2
-install_github("https://github.com/rstudio/fontawesome")
-install_github("https://github.com/rstudio/gt")
+install_github("https://github.com/sfirke/janitor")
 ```
 
 ---
@@ -86,6 +85,15 @@ install_github("https://github.com/sfirke/janitor")
 ```
 
 ![](https://user-images.githubusercontent.com/6179259/60295635-24366c00-995f-11e9-9211-22c69ba240a3.png)
+
+---
+
+## 패키지 설치 방법 2 [remotes][remotes]
+
+같이 사용하는 패키지들을 검사해서 업데이트 할지를 질문함.    
+1을 선택하고, 문제가 생기면 3 `None`을 선택
+
+![](https://user-images.githubusercontent.com/6179259/61492514-6d249200-a9ec-11e9-9d8d-775dfca627c7.png)
 
 ---
 
@@ -239,7 +247,42 @@ juniors_untidy %>%
 ---
 ## wide to long
 
-![](https://github.com/apreshill/teachthat/blob/master/gather/gather.gif?raw=true)
+![](https://github.com/apreshill/teachthat/blob/master/gather/gather-gif/gather-01.png?raw=true)
+
+---
+## wide to long
+
+![](https://github.com/apreshill/teachthat/blob/master/gather/gather-gif/gather-02.png?raw=true)
+
+---
+## wide to long
+
+![](https://github.com/apreshill/teachthat/blob/master/gather/gather-gif/gather-03.png?raw=true)
+
+---
+## wide to long
+
+![](https://github.com/apreshill/teachthat/blob/master/gather/gather-gif/gather-04.png?raw=true)
+
+---
+## wide to long
+
+![](https://github.com/apreshill/teachthat/blob/master/gather/gather-gif/gather-05.png?raw=true)
+
+---
+## wide to long
+
+![](https://github.com/apreshill/teachthat/blob/master/gather/gather-gif/gather-06.png?raw=true)
+
+---
+## wide to long
+
+![](https://github.com/apreshill/teachthat/blob/master/gather/gather-gif/gather-07.png?raw=true)
+
+---
+## wide to long
+
+![](https://github.com/apreshill/teachthat/blob/master/gather/gather-gif/gather-08.png?raw=true)
 
 ---
 
@@ -309,7 +352,8 @@ hdcm %>%
 
 ## 연습문제 
 
-- "volume"은 다른 컬럼들과 의미가 다릅니다. 다른 컬럼들은 모두 가격을 뜻하는 반면, "volume"은 거래량을 뜻합니다. `hdcm` 데이터를 `gather()` 함수를 이용해서 long form으로 바꾸는데, `volume`은 제외해 주세요.
+- `volume`은 다른 컬럼들과 의미가 다릅니다. 다른 컬럼들은 모두 가격을 뜻하는 반면, `volume`은 거래량을 뜻합니다.    
+`hdcm` 데이터를 `gather()` 함수를 이용해서 long form으로 바꾸는데, `volume`은 제외해 주세요.
 
 ---
 
@@ -388,7 +432,38 @@ juniors_about %>%
 ---
 ## long to wide
 
-![](https://github.com/apreshill/teachthat/blob/master/spread/spread.gif?raw=true)
+![](https://github.com/apreshill/teachthat/blob/master/spread/spread-gif/Slide3.png?raw=true)
+
+---
+## long to wide
+
+![](https://github.com/apreshill/teachthat/blob/master/spread/spread-gif/Slide4.png?raw=true)
+
+---
+## long to wide
+
+![](https://github.com/apreshill/teachthat/blob/master/spread/spread-gif/Slide5.png?raw=true)
+
+---
+## long to wide
+
+![](https://github.com/apreshill/teachthat/blob/master/spread/spread-gif/Slide6.png?raw=true)
+
+---
+## long to wide
+
+![](https://github.com/apreshill/teachthat/blob/master/spread/spread-gif/Slide7.png?raw=true)
+
+---
+## long to wide
+
+![](https://github.com/apreshill/teachthat/blob/master/spread/spread-gif/Slide8.png?raw=true)
+
+---
+## long to wide
+
+![](https://github.com/apreshill/teachthat/blob/master/spread/spread-gif/Slide9.png?raw=true)
+
 
 ---
 
@@ -400,14 +475,13 @@ juniors_about %>%
 library(lubridate)
 hdcm %>% 
   mutate(
-    month = month(date),
-    day = day(date)
+    year_month = 
+      floor_date(date, "month")
   ) %>% 
   select(
-    comp, month, 
-    day, close
+    comp, year_month, close
   ) %>% 
-  group_by(month) %>% 
+  group_by(year_month) %>% 
   summarise(
     comp = "현대자동차",
     mclose = mean(close)
@@ -429,7 +503,7 @@ hdcm_md
 
 ```{r index-18, echo=F}
 hdcm_md %>% 
-  spread(month, mclose)
+  spread(year_month, mclose)
 ```
 
 --
@@ -438,7 +512,7 @@ hdcm_md %>%
 
 ```{r solve-18, eval=F}
 hdcm_md %>% 
-  spread(month, mclose)
+  spread(year_month, mclose)
 ```
 ---
 
