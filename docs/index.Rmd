@@ -35,7 +35,7 @@ class: center, middle, title-slide
 
 ### 박찬엽
 
-### .small[2019년 6월 28일]
+### .small[2019년 6월 28일].tiny[update 2019년 7월 19일]
 
 ---
 
@@ -184,7 +184,7 @@ install.packages("tidyr")
 
 gather() 함수는 미래의 key 이름과 value 이름을 받아서 wide form 데이터를 long form으로 바꿈
 
-![](https://user-images.githubusercontent.com/6179259/60299951-dde60a80-9968-11e9-80e3-1a6a14e91412.png)
+<img src=https://rstudio-education.github.io/tidyverse-cookbook/images/tidyr-gather.png width=100%>
 
 ---
 
@@ -344,8 +344,9 @@ hdcm %>%
 
 spead() 함수는 wide form 데이터에서 key column과 value column을 받아서  long form으로 바꿈
 
-![](https://user-images.githubusercontent.com/6179259/60301034-5c43ac00-996b-11e9-95e8-cb2468192f24.png)
-
+<center>
+  <img src=https://rstudio-education.github.io/tidyverse-cookbook/images/tidyr-spread.png>
+</center>
 ---
 
 ## long to wide
