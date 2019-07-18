@@ -469,29 +469,32 @@ juniors_about %>%
 
 ## 연습문제 
 
-`hdcm_md` 데이터를 아래 코드로 만들어 주세요.
+`SHANKs` 데이터를 아래 코드로 만들어 주세요.
 .pull-left[
 ```{r index-16, message=F}
 library(lubridate)
-hdcm %>% 
+library(tqk)
+data(SHANK)
+SHANK %>% 
+  filter(date > "2015-01-01",
+    date < "2016-01-01") %>% 
   mutate(
     year_month = 
       floor_date(date, "month")
   ) %>% 
   select(
-    comp, year_month, close
+    symbol, year_month, close
   ) %>% 
-  group_by(year_month) %>% 
+  group_by(symbol, 
+           year_month) %>% 
   summarise(
-    comp = "현대자동차",
     mclose = mean(close)
-    ) ->
-  hdcm_md
+    ) -> SHANKs
 ```
 ]
 .pull-right[
 ```{r index-17, echo=F}
-hdcm_md
+SHANKs
 ```
 ]
 
@@ -499,21 +502,22 @@ hdcm_md
 
 ## 연습문제 
 
-1. `hdcm_md` 데이터를 아래와 같이 월 컬럼을 만들어 주세요.
+1. `SHANKs` 데이터를 아래와 같이 월 컬럼을 만들어 주세요.
 
 ```{r index-18, echo=F}
-hdcm_md %>% 
+SHANKs %>% 
   spread(year_month, mclose)
 ```
 
---
+---
 
 ## 연습문제의 예시 답
 
 ```{r solve-18, eval=F}
-hdcm_md %>% 
+SHANKs %>% 
   spread(year_month, mclose)
 ```
+
 ---
 
 ## 연장을 더 챙겨드림 1 [janitor][janitor]
@@ -521,6 +525,32 @@ hdcm_md %>%
 `janitor` 패키지는 데이터 전처리에 필요한 편의 함수들을 제공합니다.
 
 ![](https://user-images.githubusercontent.com/6179259/60302194-32d84f80-996e-11e9-8909-5482332b7f14.png)
+
+---
+
+## [janitor][janitor] `clean_names()` 
+
+문제가 있는 컬럼 이름을 고쳐줌
+
+```{r eval = F}
+library(readxl)
+library(janitor)
+read_excel("messy_excel_file.xlsx") %>% 
+  clean_names()
+```
+
+---
+
+## `excel_numeric_to_date()` 
+
+엑셀의 날짜 데이터가 `40000` 같이 나오는 것을 다시 날짜로 변경함
+
+```{r}
+excel_numeric_to_date(40000)
+excel_numeric_to_date(40000.5)
+excel_numeric_to_date(40000.5, include_time = TRUE)
+excel_numeric_to_date(40000.521, include_time = TRUE)
+```
 
 ---
 

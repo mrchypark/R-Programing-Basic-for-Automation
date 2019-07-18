@@ -556,45 +556,48 @@ juniors_about %&gt;%
 
 ## 연습문제 
 
-`hdcm_md` 데이터를 아래 코드로 만들어 주세요.
+`SHANKs` 데이터를 아래 코드로 만들어 주세요.
 .pull-left[
 
 ```r
 library(lubridate)
-hdcm %&gt;% 
+library(tqk)
+data(SHANK)
+SHANK %&gt;% 
+  filter(date &gt; "2015-01-01",
+    date &lt; "2016-01-01") %&gt;% 
   mutate(
     year_month = 
       floor_date(date, "month")
   ) %&gt;% 
   select(
-    comp, year_month, close
+    symbol, year_month, close
   ) %&gt;% 
-  group_by(year_month) %&gt;% 
+  group_by(symbol, 
+           year_month) %&gt;% 
   summarise(
-    comp = "현대자동차",
     mclose = mean(close)
-    ) -&gt;
-  hdcm_md
+    ) -&gt; SHANKs
 ```
 ]
 .pull-right[
 
 ```
-## # A tibble: 12 x 3
-##    year_month comp        mclose
-##    &lt;date&gt;     &lt;chr&gt;        &lt;dbl&gt;
-##  1 2018-01-01 현대자동차 155205.
-##  2 2018-02-01 현대자동차 157889.
-##  3 2018-03-01 현대자동차 152833.
-##  4 2018-04-01 현대자동차 155500 
-##  5 2018-05-01 현대자동차 148475 
-##  6 2018-06-01 현대자동차 134079.
-##  7 2018-07-01 현대자동차 125523.
-##  8 2018-08-01 현대자동차 125273.
-##  9 2018-09-01 현대자동차 129118.
-## 10 2018-10-01 현대자동차 116643.
-## 11 2018-11-01 현대자동차 102155.
-## 12 2018-12-01 현대자동차 115895.
+## # A tibble: 60 x 3
+## # Groups:   symbol [5]
+##    symbol year_month  mclose
+##    &lt;chr&gt;  &lt;date&gt;       &lt;dbl&gt;
+##  1 AMP    2015-01-01 241291.
+##  2 AMP    2015-02-01 282273.
+##  3 AMP    2015-03-01 303996.
+##  4 AMP    2015-04-01 364476.
+##  5 AMP    2015-05-01 400556.
+##  6 AMP    2015-06-01 394477.
+##  7 AMP    2015-07-01 405565.
+##  8 AMP    2015-08-01 377650 
+##  9 AMP    2015-09-01 356275 
+## 10 AMP    2015-10-01 376143.
+## # … with 50 more rows
 ```
 ]
 
@@ -602,28 +605,34 @@ hdcm %&gt;%
 
 ## 연습문제 
 
-1. `hdcm_md` 데이터를 아래와 같이 월 컬럼을 만들어 주세요.
+1. `SHANKs` 데이터를 아래와 같이 월 컬럼을 만들어 주세요.
 
 
 ```
-## # A tibble: 1 x 13
-##   comp  `2018-01-01` `2018-02-01` `2018-03-01` `2018-04-01` `2018-05-01`
-##   &lt;chr&gt;        &lt;dbl&gt;        &lt;dbl&gt;        &lt;dbl&gt;        &lt;dbl&gt;        &lt;dbl&gt;
-## 1 현대자동…      155205.      157889.      152833.       155500       148475
-## # … with 7 more variables: `2018-06-01` &lt;dbl&gt;, `2018-07-01` &lt;dbl&gt;,
-## #   `2018-08-01` &lt;dbl&gt;, `2018-09-01` &lt;dbl&gt;, `2018-10-01` &lt;dbl&gt;,
-## #   `2018-11-01` &lt;dbl&gt;, `2018-12-01` &lt;dbl&gt;
+## # A tibble: 5 x 13
+## # Groups:   symbol [5]
+##   symbol `2015-01-01` `2015-02-01` `2015-03-01` `2015-04-01` `2015-05-01`
+##   &lt;chr&gt;         &lt;dbl&gt;        &lt;dbl&gt;        &lt;dbl&gt;        &lt;dbl&gt;        &lt;dbl&gt;
+## 1 AMP         241291.      282273.      303996.      364476.      400556.
+## 2 HYD         171119.      161765.      172500       168705.      164556.
+## 3 KKO         150086.      141594.      121068.      110855.      107967.
+## 4 NVR         756619.      674647.      659409.      662136.      611389.
+## 5 SS         1348048.     1367765.     1450182.     1443318.     1341889.
+## # … with 7 more variables: `2015-06-01` &lt;dbl&gt;, `2015-07-01` &lt;dbl&gt;,
+## #   `2015-08-01` &lt;dbl&gt;, `2015-09-01` &lt;dbl&gt;, `2015-10-01` &lt;dbl&gt;,
+## #   `2015-11-01` &lt;dbl&gt;, `2015-12-01` &lt;dbl&gt;
 ```
 
---
+---
 
 ## 연습문제의 예시 답
 
 
 ```r
-hdcm_md %&gt;% 
+SHANKs %&gt;% 
   spread(year_month, mclose)
 ```
+
 ---
 
 ## 연장을 더 챙겨드림 1 [janitor][janitor]
@@ -631,6 +640,59 @@ hdcm_md %&gt;%
 `janitor` 패키지는 데이터 전처리에 필요한 편의 함수들을 제공합니다.
 
 ![](https://user-images.githubusercontent.com/6179259/60302194-32d84f80-996e-11e9-8909-5482332b7f14.png)
+
+---
+
+## [janitor][janitor] `clean_names()` 
+
+문제가 있는 컬럼 이름을 고쳐줌
+
+
+```r
+library(readxl)
+library(janitor)
+read_excel("messy_excel_file.xlsx") %&gt;% 
+  clean_names()
+```
+
+---
+
+## `excel_numeric_to_date()` 
+
+엑셀의 날짜 데이터가 `40000` 같이 나오는 것을 다시 날짜로 변경함
+
+
+```r
+excel_numeric_to_date(40000)
+```
+
+```
+## [1] "2009-07-06"
+```
+
+```r
+excel_numeric_to_date(40000.5)
+```
+
+```
+## [1] "2009-07-06"
+```
+
+```r
+excel_numeric_to_date(40000.5, include_time = TRUE)
+```
+
+```
+## [1] "2009-07-06 12:00:00 KST"
+```
+
+```r
+excel_numeric_to_date(40000.521, include_time = TRUE)
+```
+
+```
+## [1] "2009-07-06 12:30:14 KST"
+```
 
 ---
 
@@ -961,7 +1023,7 @@ Sys.time()
 ```
 
 ```
-## [1] "2019-07-19 06:44:45 KST"
+## [1] "2019-07-19 07:53:59 KST"
 ```
 
 ```r
