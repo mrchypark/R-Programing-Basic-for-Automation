@@ -1105,6 +1105,11 @@ iris %>%
 
 `iris` 데이터에서 `Species` 별로 데이터를 분리해서 개별 파일(총 3개의 파일)로 저장해주세요.
 
+```{r eval=F}
+library(writexl)
+write_xlsx(iris, "iris.xlsx")
+```
+
 ```{r index-48, eval=F}
 tar <- iris$Species %>% 
   as.character() %>% 
