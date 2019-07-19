@@ -301,6 +301,7 @@ remotes::install_github("mrchypark/tqk")
 
 ```{r index-10, eval=F}
 library(tqk)
+library(stringr)
 library(dplyr)
 
 # 주식종목 코드를 가져옵니다.
@@ -548,6 +549,7 @@ read_excel("messy_excel_file.xlsx") %>%
 `dplyr` 패키지의 `mutate()` 함수 등으로 감싸서 사용
 
 ```{r}
+library(janitor)
 excel_numeric_to_date(40000)
 excel_numeric_to_date(40000.5)
 excel_numeric_to_date(40000.5, include_time = TRUE)

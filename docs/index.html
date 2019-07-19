@@ -218,7 +218,26 @@ gather() 함수는 미래의 key 이름과 value 이름을 받아서 wide form �
 
 ```r
 library(dplyr)
+```
 
+```
+## 
+## Attaching package: 'dplyr'
+```
+
+```
+## The following objects are masked from 'package:stats':
+## 
+##     filter, lag
+```
+
+```
+## The following objects are masked from 'package:base':
+## 
+##     intersect, setdiff, setequal, union
+```
+
+```r
 juniors_untidy &lt;- tribble(
   ~ "baker", ~"cinnamon_1", ~"cardamom_2", ~"nutmeg_3",
   "Emma", 1L,   0L, 1L,
@@ -341,6 +360,7 @@ remotes::install_github("mrchypark/tqk")
 
 ```r
 library(tqk)
+library(stringr)
 library(dplyr)
 
 # 주식종목 코드를 가져옵니다.
@@ -663,6 +683,21 @@ read_excel("messy_excel_file.xlsx") %&gt;%
 엑셀의 날짜 데이터가 `40000` 같이 나오는 것을 다시 날짜로 변경함    
 `dplyr` 패키지의 `mutate()` 함수 등으로 감싸서 사용
 
+
+```r
+library(janitor)
+```
+
+```
+## 
+## Attaching package: 'janitor'
+```
+
+```
+## The following objects are masked from 'package:stats':
+## 
+##     chisq.test, fisher.test
+```
 
 ```r
 excel_numeric_to_date(40000)
@@ -1025,7 +1060,7 @@ Sys.time()
 ```
 
 ```
-## [1] "2019-07-19 07:59:05 KST"
+## [1] "2019-07-19 09:06:43 KST"
 ```
 
 ```r
@@ -1040,7 +1075,26 @@ class(Sys.time())
 
 ```r
 library(hms)
+```
+
+```
+## 
+## Attaching package: 'hms'
+```
+
+```
+## The following object is masked from 'package:lubridate':
+## 
+##     hms
+```
+
+```r
 as.hms(150)
+```
+
+```
+## Warning: as.hms() is deprecated, please use as_hms().
+## This warning is displayed once per session.
 ```
 
 ```
